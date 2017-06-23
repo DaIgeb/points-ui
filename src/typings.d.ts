@@ -1,23 +1,25 @@
 type TState = {
-  counter: TCounterState;
+  tours: TToursState;
   auth: TAuthState;
   routing: TRouterState;
 };
 
-type TCounterState = number;
-type TAuthState = auth0.Auth0UserProfile | null;
-type TRouterState = object;
+type TToursState = number;
+type TAuthState = {
+  profile: auth0.Auth0UserProfile | undefined;
+  idToken: string | undefined;
+  accessToken: string | undefined;
+};
+
+type TRouterState = any;
 
 type TDispatchableAction = (dispatch: (action: TActions) => void, getState: () => TState) => (TActions | Promise<TActions> | void);
 
 type TActions = {
-  type: 'SET_COUNTER';
-  payload: number;
+  type: 'LOGOUT';
 } | {
-    type: 'INCREMENT_COUNTER' | 'DECREMENT_COUNTER' | 'LOGOUT';
-  } | {
     type: 'LOGIN_SUCCESS';
-    payload: auth0.Auth0UserProfile;
+    payload: TAuthState;
   } | {
     type: 'LOGIN_FAILED';
     payload: object;

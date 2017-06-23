@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import { auth } from './auth';
+import * as fromAuth from './auth';
+import * as fromTours from './tours';
 
 export const rootReducer = combineReducers<TState>({
-  auth,
-  routing: routerReducer
+  auth: fromAuth.reducer,  
+  routing: routerReducer,
+  tours: fromTours.reducer
 });
+
+export const getProfile = (state: TState) => fromAuth.getProfile(state.auth);

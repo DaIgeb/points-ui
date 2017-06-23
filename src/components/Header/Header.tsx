@@ -4,13 +4,14 @@ import { Auth0UserProfile } from 'auth0-js';
 
 import { IconLabel, FontIcon } from '../';
 import { login, logout } from '../../actions';
+import * as fromReducers from '../../reducers';
 
 const styles = require<TStyle>('./Header.css');
 const logo = require<string>('./logo.svg');
 
 type TStyle = { header: string };
 type TProps = {
-  profile: Auth0UserProfile | null,
+  profile: Auth0UserProfile | undefined,
   login: () => void;
   logout: () => void;
 };
@@ -39,7 +40,7 @@ class HeaderComponent extends React.Component<TProps, {}> {
 }
 
 const mapStateToProps = (state: TState) => ({
-  profile: state.auth
+  profile: fromReducers.getProfile(state)
 });
 
 export const Header = connect(mapStateToProps, { login, logout })(HeaderComponent);

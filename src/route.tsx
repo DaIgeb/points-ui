@@ -5,7 +5,7 @@ import { Switch, Route, RouteComponentProps } from 'react-router-dom';
 
 import { history } from './history';
 import { CoreLayout } from './layouts/CoreLayout';
-import { Header, Navigation } from './components';
+import { Header, Navigation, Tours } from './components';
 import { Callback } from './auth/Callback';
 import configureStore from './store/configureStore';
 
@@ -32,7 +32,7 @@ class AppComponent extends React.Component<{}, {}> {
         <Switch>
           <Route path="/home" component={Home} />
           <Route path="/members" component={Home} />
-          <Route path="/tours" component={Home} />
+          <Route path="/tours" component={Tours} />
           <Route
             path="/callback"
             render={(props) => {

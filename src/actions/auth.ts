@@ -1,10 +1,4 @@
-import { Auth0UserProfile } from 'auth0-js';
 import Auth0Lock from 'auth0-lock';
-
-interface ShowLock {
-  profile: Auth0UserProfile;
-  idToken: string;
-}
 
 export const logout = (): TActions => ({ type: 'LOGOUT' });
 
@@ -16,7 +10,7 @@ export const login = (): TDispatchableAction => (dispatch, getState) => {
   });
 
   const showLock = () =>
-    new Promise<ShowLock>((resolve, reject) => {
+    new Promise<TAuthState>((resolve, reject) => {
 
       lock.on('hide', () => reject('Lock closed'));
 
@@ -28,7 +22,7 @@ export const login = (): TDispatchableAction => (dispatch, getState) => {
           }
 
           lock.hide();
-          resolve({ profile, idToken: authResult.idToken });
+          resolve({ profile, idToken: authResult.idToken, accessToken: authResult.accessToken });
         });
       });
 
@@ -44,7 +38,7 @@ export const login = (): TDispatchableAction => (dispatch, getState) => {
     .then((data) => {
       const successAction: TActions = ({
         type: 'LOGIN_SUCCESS',
-        payload: data.profile
+        payload: data
       });
       dispatch(successAction);
 
