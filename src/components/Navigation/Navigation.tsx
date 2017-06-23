@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { IconLabel } from '../components';
+import { IconLabel } from '../';
 
 const styles = require<{ navigation: string, selected: string }>('./Navigation.css');
 

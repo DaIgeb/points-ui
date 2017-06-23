@@ -2,9 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Auth0UserProfile } from 'auth0-js';
 
-import { IconLabel } from '../components';
-import { FontIcon } from '../components';
-import { login, logout } from '../actions';
+import { IconLabel, FontIcon } from '../';
+import { login, logout } from '../../actions';
 
 const styles = require<TStyle>('./Header.css');
 const logo = require<string>('./logo.svg');
