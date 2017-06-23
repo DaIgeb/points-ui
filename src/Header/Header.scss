@@ -1,0 +1,39 @@
+@import "variables.scss";
+
+:local(.header) {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 24px;
+  .title {
+    & > div {
+      padding-left: $default-padding;
+    }
+  }
+
+  .filler {
+    flex:1;
+  }
+
+  .user {
+    margin-right: 3*$default-padding;
+    display: flex;
+    cursor: pointer;
+
+    img {
+      max-height: 50px;
+      border-radius: 30px;
+      border-color: $primary-text-color;
+      border-style: solid;
+      border-width: $default-padding/2;
+    }    
+  }
+
+  .logo {
+    display: flex;
+    margin-right: 3*$default-padding;
+    img {
+      max-height: 50px;
+    }    
+  }
+}

@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+:local(.header) {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 24px; }
+  :local(.header) .title > div {
+    padding-left: 5px; }
+  :local(.header) .filler {
+    flex: 1; }
+  :local(.header) .user {
+    margin-right: 15px;
+    display: flex;
+    cursor: pointer; }
+    :local(.header) .user img {
+      max-height: 50px;
+      border-radius: 30px;
+      border-color: white;
+      border-style: solid;
+      border-width: 2.5px; }
+  :local(.header) .logo {
+    display: flex;
+    margin-right: 15px; }
+    :local(.header) .logo img {
+      max-height: 50px; }

@@ -1,0 +1,28 @@
+@import "variables.scss";
+
+:local(.navigation) {
+  width: 150px;
+  font-size: 16px;
+
+  .menu {
+    &.menu > a > div {
+      padding: $default-padding;              
+    }
+  
+    a {
+      color: currentColor;
+      text-decoration: none;  
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .8);
+      color: black;
+    }
+  }
+}
+
+:local(.selected) {  
+  div:not(:hover) {
+    background-color: darken( rgba(255, 255, 255, .5), 2);  
+  }
+}
