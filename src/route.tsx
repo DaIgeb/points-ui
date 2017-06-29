@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Provider, connect } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import { Switch, Route, RouteComponentProps } from 'react-router-dom';
+import { Switch, RouteComponentProps } from 'react-router-dom';
 
 import { history } from './history';
 import { CoreLayout } from './layouts/CoreLayout';
-import { Header, Navigation, Tours } from './components';
+import { Header, Navigation, Tours, PrivateRoute } from './components';
 import { Callback } from './auth/Callback';
 import configureStore from './store/configureStore';
 
@@ -30,10 +30,10 @@ class AppComponent extends React.Component<{}, {}> {
         navigation={<Navigation />}
       >
         <Switch>
-          <Route path="/home" component={Home} />
-          <Route path="/members" component={Home} />
-          <Route path="/tours" component={Tours} />
-          <Route
+          <PrivateRoute path="/home" component={Home} />
+          <PrivateRoute path="/members" component={Home} />
+          <PrivateRoute path="/tours" component={Tours} />
+          <PrivateRoute
             path="/callback"
             render={(props) => {
               handleAuthentication(props);

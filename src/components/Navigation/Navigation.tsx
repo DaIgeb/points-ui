@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { NavLink } from 'react-router-dom';
 
 import { IconLabel } from '../';
 
 const styles = require<{ navigation: string, selected: string }>('./Navigation.css');
 
-export const Navigation = () => (
+export const Navigation = connect(null, { push })((props: { push: (uri: string) => void }) => (
   <div className={styles.navigation}>
     <div className="menu">
       <NavLink activeClassName={styles.selected} to="/tours">
@@ -18,4 +20,4 @@ export const Navigation = () => (
       </NavLink>
     </div>
   </div>
-);
+));

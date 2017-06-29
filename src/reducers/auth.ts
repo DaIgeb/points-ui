@@ -16,3 +16,4 @@ export const reducer = (state: TAuthState = defaultState, action: TActions) => {
 };
 
 export const getProfile = (state: TAuthState) => state.profile;
+export const getIdToken = (state: TAuthState) => state.idToken;

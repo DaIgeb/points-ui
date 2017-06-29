@@ -6,7 +6,12 @@ export const login = (): TDispatchableAction => (dispatch, getState) => {
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_SECRET;
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   const lock = new Auth0Lock(clientId, domain, {
-    auth: { redirect: false }
+    auth: {
+      redirect: false,
+      params: {
+        scope: 'openid profile email'
+      }
+    }
   });
 
   const showLock = () =>
