@@ -1,4 +1,6 @@
- @import "variables.scss";
+ @import "styles/variables.scss";
+ @import "styles/table.scss";
+ @import "styles/progress.scss";
 
 html {
   font-family: $font-stack;
@@ -6,49 +8,12 @@ html {
   body {
     margin: 0;
     padding: 0;
-
-    table {
-      border-collapse: collapse;
-      border-spacing: 0;
-      width: 100%;
-      text-align: left;
-
-      td, th {
-        padding: 0 56px 0 24px;        
-        border-bottom: 1px solid rgba(0, 0, 0, 0.075);
-      }
-      
-      thead {        
-        font-size: 12px;
-        font-weight: bold;
-        color: rgba(0, 0, 0, 0.54);            
-
-        tr {
-          height: 64px;
-        }
-      }
-
-      tbody {
-        color: rgba(0, 0, 0, 0.87);
-        font-size: 13px;
-
-        tr {
-          height: 48px;
-        }
-      }
-
-      
-    }
   }
 }
 
 .numeric {
   text-align: right;
   flex-direction: row-reverse;
-}
-
-:local(.App) {
-  text-align: center;
 }
 
 :local(.header) {

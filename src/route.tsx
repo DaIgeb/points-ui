@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Provider, connect } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import { Switch, RouteComponentProps } from 'react-router-dom';
+import { Switch, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { history } from './history';
 import { CoreLayout } from './layouts/CoreLayout';
@@ -21,7 +21,7 @@ const Home = () => (
   </div>
 );
 
-class AppComponent extends React.Component<{}, {}> {
+class AppComponent extends React.Component<RouteComponentProps<void>, {}> {
   render() {
     return (
       <CoreLayout
@@ -46,7 +46,7 @@ class AppComponent extends React.Component<{}, {}> {
   }
 }
 
-const App = connect(() => ({}), {})(AppComponent);
+const App = withRouter<{}>(connect<{}, {}, RouteComponentProps<void>>(() => ({}), {})(AppComponent));
 
 export const makeMainRoutes = () => {
   const store = configureStore({});

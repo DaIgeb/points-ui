@@ -28,7 +28,7 @@ class ToursComponent extends React.Component<TProps> {
   render() {
     const { tours, loaded } = this.props;
     if (!loaded) {
-      return null;
+      return <div className="progress-linear" />;
     }
 
     const renderRow = (tour: TTour) => (
