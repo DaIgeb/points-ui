@@ -7,7 +7,9 @@ import { IconLabel } from '../';
 
 const styles = require<{ navigation: string, selected: string }>('./Navigation.css');
 
-export const Navigation = connect(null, { push })((props: { push: (uri: string) => void }) => (
+type TDispatchProps = { push: (uri: string) => void };
+
+export const Navigation = connect<{}, TDispatchProps, {}>(null, { push })((props: TDispatchProps) => (
   <div className={styles.navigation}>
     <div className="menu">
       <NavLink activeClassName={styles.selected} to="/tours">

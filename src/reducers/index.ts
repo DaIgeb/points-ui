@@ -1,12 +1,14 @@
-import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { Reducer, combineReducers } from 'redux';
+import { routerReducer, RouterState } from 'react-router-redux';
 
 import * as fromAuth from './auth';
 import * as fromTours from './tours';
 
+const routeReducer = routerReducer as Reducer<RouterState>;
+
 export const rootReducer = combineReducers<TState>({
   auth: fromAuth.reducer,  
-  routing: routerReducer,
+  routing: routeReducer,
   tours: fromTours.reducer
 });
 

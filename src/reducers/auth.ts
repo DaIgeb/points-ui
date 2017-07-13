@@ -9,7 +9,7 @@ export const reducer = (state: TAuthState = defaultState, action: TActions) => {
     case 'LOGIN_SUCCESS':
       return action.payload;
     case 'LOGOUT':
-      return null;
+      return defaultState;
     default:
       return state;
   }

@@ -15,6 +15,8 @@ type TDispatchProps = {
 };
 type TProps = TStateProps & TDispatchProps;
 
+// const styles = require<{ 'table-header-cell': string, numeric: string }>('./Tours.css');
+
 class ToursComponent extends React.Component<TProps> {
   componentWillMount() {
     this.initialize(this.props);
@@ -25,9 +27,34 @@ class ToursComponent extends React.Component<TProps> {
 
   render() {
     const { tours, loaded } = this.props;
+    if (!loaded) {
+      return null;
+    }
+
+    const renderRow = (tour: TTour) => (
+      <tr>
+        <td>{tour.name}</td>
+        <td className="numeric">{tour.points}</td>
+        <td className="numeric">{tour.distance}</td>
+        <td className="numeric">{tour.elevation}</td>
+      </tr>
+    );
+
     return (
       <div >
-        {loaded && tours.map(t => t.name).join()}
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th className="numeric">Points</th>
+              <th className="numeric">Distance</th>
+              <th className="numeric">Elevation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tours.map(renderRow)}
+          </tbody>
+        </table>
       </div >
     );
   }
