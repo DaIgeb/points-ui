@@ -32,7 +32,7 @@ class ToursComponent extends React.Component<TProps> {
     }
 
     const renderRow = (tour: TTour) => (
-      <tr>
+      <tr key={tour.id}>
         <td>{tour.name}</td>
         <td className="numeric">{tour.points}</td>
         <td className="numeric">{tour.distance}</td>

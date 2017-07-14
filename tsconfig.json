@@ -22,7 +22,6 @@
     ],
     "types": [
       "webpack-env",
-      "material-ui",
       "auth0-js",
       "auth0-lock"
     ]
