@@ -1,5 +1,6 @@
 type TState = {
   tours: TToursState;
+  routes: TRoutesStates;
   people: TPeopleState;
   auth: TAuthState;
   routing: TRouterState;
@@ -22,6 +23,11 @@ type TToursState = {
   byCode: TByCodeState<TTour>;
   info: TInfoState;
 };
+type TRoutesStates = {
+  all: TAllState;
+  byCode: TByCodeState<TRoute>;
+  info: TInfoState;
+};
 type TPeopleState = {
   all: TAllState;
   byCode: TByCodeState<TPerson>;
@@ -38,11 +44,19 @@ type TRouterState = any;
 
 type TTour = {
   id: string;
-  name: string;
+  route: string;
   points: 15 | 20 | 40 | 80 | 150;
+  participants: { id: string; }[];
+  user: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+type TRoute = {
+  id: string;
+  name: string;
   elevation: number;
   distance: number;
-  participants: { id: string; }[];
   user: string;
   createdAt: number;
   updatedAt: number;
@@ -84,6 +98,14 @@ type TActions = {
     payload: TPerson;
   } | {
     type: 'PERSON_LOAD';
+  } | {
+    type: 'ROUTES_LOAD_SUCCESS';
+    payload: TRoute[];
+  } | {
+    type: 'ROUTES_LOAD_FAILURE';
+    payload: TRoute;
+  } | {
+    type: 'ROUTES_LOAD';
   };
 
 declare const process: any;

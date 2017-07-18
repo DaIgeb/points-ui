@@ -7,9 +7,9 @@ export const reload = (): TDispatchableAction => (dispatch, getState): (TActions
   if (!idToken) {
     return Promise.reject('Not logged in');
   }
-  if (!fromReducers.isLoadingPeople(getState())) {
+  if (!fromReducers.isLoadingRoutes(getState())) {
     dispatch({
-      type: 'PERSON_LOAD'
+      type: 'ROUTES_LOAD'
     });
 
     const request: RequestInit = {
@@ -20,7 +20,7 @@ export const reload = (): TDispatchableAction => (dispatch, getState): (TActions
       method: 'GET'
     };
 
-    return fetch(process.env.REACT_APP_API_HOST + '/people', request)
+    return fetch(process.env.REACT_APP_API_HOST + '/routes', request)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -28,14 +28,14 @@ export const reload = (): TDispatchableAction => (dispatch, getState): (TActions
 
         throw Error(response.statusText);
       })
-      .then((data: TPerson[]) => {
-        const action: TActions = { type: 'PERSON_LOAD_SUCCESS', payload: data };
+      .then((data: TRoute[]) => {
+        const action: TActions = { type: 'ROUTES_LOAD_SUCCESS', payload: data };
         dispatch(action);
 
         return action;
       })
       .catch((err) => {
-        const action: TActions = { type: 'PERSON_LOAD_FAILURE', payload: err };
+        const action: TActions = { type: 'ROUTES_LOAD_FAILURE', payload: err };
         dispatch(action);
 
         return action;

@@ -19,5 +19,10 @@ export const Navigation = withRouter<{}>((props: TProps) => (
         <IconLabel iconName="group" fixedWith={true} label="Fahrer" />
       </NavLink>
     </div>
+    <div className="menu">
+      <NavLink activeClassName={styles.selected} to="/routes">
+        <IconLabel iconName="group" fixedWith={true} label="Routen" />
+      </NavLink>
+    </div>
   </div>
 ));

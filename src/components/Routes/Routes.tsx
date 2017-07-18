@@ -7,7 +7,7 @@ import * as fromActions from '../../actions';
 
 type TOwnProps = RouteComponentProps<{}>;
 type TStateProps = {
-  tours: TTour[];
+  routes: TRoute[];
   loaded: boolean;
 } & TOwnProps;
 type TDispatchProps = {
@@ -15,9 +15,7 @@ type TDispatchProps = {
 };
 type TProps = TStateProps & TDispatchProps;
 
-// const styles = require<{ 'table-header-cell': string, numeric: string }>('./Tours.css');
-
-class ToursComponent extends React.Component<TProps> {
+class RoutesComponent extends React.Component<TProps> {
   componentWillMount() {
     this.initialize(this.props);
   }
@@ -26,15 +24,16 @@ class ToursComponent extends React.Component<TProps> {
   }
 
   render() {
-    const { tours, loaded } = this.props;
+    const { routes, loaded } = this.props;
     if (!loaded) {
       return <div className="progress-linear" />;
     }
 
-    const renderRow = (tour: TTour) => (
+    const renderRow = (tour: TRoute) => (
       <tr key={tour.id}>
-        <td>{tour.route}</td>
-        <td className="numeric">{tour.points}</td>
+        <td>{tour.name}</td>
+        <td className="numeric">{tour.distance}</td>
+        <td className="numeric">{tour.elevation}</td>
         <td>{tour.user}</td>
         <td>{new Date(tour.updatedAt).toISOString()}</td>
         <td>{new Date(tour.createdAt).toISOString()}</td>
@@ -46,15 +45,16 @@ class ToursComponent extends React.Component<TProps> {
         <table>
           <thead>
             <tr>
-              <th>Route</th>
-              <th className="numeric">Points</th>
-              <td>User</td>
-              <td>Last updated</td>
-              <td>Created at</td>
+              <th>Name</th>
+              <th className="numeric">Distance</th>
+              <th className="numeric">Elevation</th>
+              <th>User</th>
+              <th>Last updated</th>
+              <th>Created at</th>
             </tr>
           </thead>
           <tbody>
-            {tours.map(renderRow)}
+            {routes.map(renderRow)}
           </tbody>
         </table>
       </div >
@@ -71,11 +71,11 @@ class ToursComponent extends React.Component<TProps> {
 
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
   ...ownProps,
-  tours: fromReducers.getTours(state),
-  loaded: fromReducers.areToursLoaded(state)
+  routes: fromReducers.getRoutes(state),
+  loaded: fromReducers.areRoutesLoaded(state)
 });
 
-export const Tours = connect<TStateProps, TDispatchProps, TOwnProps>(
+export const Routes = connect<TStateProps, TDispatchProps, TOwnProps>(
   mapStateToProps,
-  { reload: fromActions.tours.reload }
-)(ToursComponent);
+  { reload: fromActions.routes.reload }
+)(RoutesComponent);
