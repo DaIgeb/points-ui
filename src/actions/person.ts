@@ -9,7 +9,7 @@ export const reload = (): TDispatchableAction => (dispatch, getState): (TActions
   }
   if (!fromReducers.isLoadingTours(getState())) {
     dispatch({
-      type: 'TOURS_LOAD'
+      type: 'PERSON_LOAD'
     });
 
     const request: RequestInit = {
@@ -20,7 +20,7 @@ export const reload = (): TDispatchableAction => (dispatch, getState): (TActions
       method: 'GET'
     };
 
-    return fetch(process.env.REACT_APP_API_HOST + '/tours', request)
+    return fetch(process.env.REACT_APP_API_HOST + '/people', request)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -28,14 +28,14 @@ export const reload = (): TDispatchableAction => (dispatch, getState): (TActions
 
         throw Error(response.statusText);
       })
-      .then((data: TTour[]) => {
-        const action: TActions = { type: 'TOURS_LOAD_SUCCESS', payload: data };
+      .then((data: TPerson[]) => {
+        const action: TActions = { type: 'PERSON_LOAD_SUCCESS', payload: data };
         dispatch(action);
 
         return action;
       })
       .catch((err) => {
-        const action: TActions = { type: 'TOURS_LOAD_FAILURE', payload: err };
+        const action: TActions = { type: 'PERSON_LOAD_FAILURE', payload: err };
         dispatch(action);
 
         return action;

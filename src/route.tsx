@@ -5,7 +5,7 @@ import { Switch, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { history } from './history';
 import { CoreLayout } from './layouts/CoreLayout';
-import { Header, Navigation, Tours, PrivateRoute } from './components';
+import { Header, Navigation, Tours, People, PrivateRoute } from './components';
 import { Callback } from './auth/Callback';
 import configureStore from './store/configureStore';
 
@@ -31,7 +31,7 @@ class AppComponent extends React.Component<RouteComponentProps<void>, {}> {
       >
         <Switch>
           <PrivateRoute path="/home" component={Home} />
-          <PrivateRoute path="/members" component={Home} />
+          <PrivateRoute path="/members" component={People} />
           <PrivateRoute path="/tours" component={Tours} />
           <PrivateRoute
             path="/callback"

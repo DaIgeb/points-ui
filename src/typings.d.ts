@@ -1,5 +1,6 @@
 type TState = {
   tours: TToursState;
+  people: TPeopleState;
   auth: TAuthState;
   routing: TRouterState;
 };
@@ -21,6 +22,11 @@ type TToursState = {
   byCode: TByCodeState<TTour>;
   info: TInfoState;
 };
+type TPeopleState = {
+  all: TAllState;
+  byCode: TByCodeState<TPerson>;
+  info: TInfoState;
+};
 type TProfile = auth0.Auth0UserProfile & { roles?: string[] };
 type TAuthState = {
   profile: TProfile | undefined;
@@ -38,8 +44,18 @@ type TTour = {
   distance: number;
   participants: { id: string; }[];
   user: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+type TPerson = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  user: string;
+  createdAt: number;
+  updatedAt: number;
 }
 
 type TDispatchableAction = (dispatch: (action: TActions) => void, getState: () => TState) => (TActions | Promise<TActions> | void);
@@ -60,6 +76,14 @@ type TActions = {
     payload: TTour;
   } | {
     type: 'TOURS_LOAD';
+  } | {
+    type: 'PERSON_LOAD_SUCCESS';
+    payload: TPerson[];
+  } | {
+    type: 'PERSON_LOAD_FAILURE';
+    payload: TPerson;
+  } | {
+    type: 'PERSON_LOAD';
   };
 
 declare const process: any;
