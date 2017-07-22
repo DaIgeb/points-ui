@@ -1,0 +1,36 @@
+@import "variables.scss";
+
+:local(.container) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+:local(.title) {
+  background-color: red;
+  display: flex;
+  align-items: center;
+  padding: 2*$default-padding;
+  overflow: hidden;
+
+  h1 {
+    flex: 1;    
+  }
+}
+
+:local(.content) {
+  padding: 2*$default-padding;
+  position: relative;
+  flex: 1;
+  overflow: auto;
+}
+
+:local(.add) {
+  padding: 2*$default-padding;
+  position: absolute;
+  top: 0;
+  bottom:0;
+  left: 0;
+  right: 0;
+}
