@@ -9,7 +9,7 @@ import * as fromReducers from '../../reducers';
 const styles = require<TStyle>('./Header.css');
 const logo = require<string>('./logo.svg');
 
-type TStyle = { header: string };
+type TStyle = { header: string; };
 type TProps = {
   profile: Auth0UserProfile | undefined,
   login: () => void;
