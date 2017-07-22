@@ -1,6 +1,5 @@
  @import "styles/variables.scss";
  @import "styles/table.scss";
- @import "styles/progress.scss";
 
 html {
   font-family: $font-stack;
@@ -35,7 +34,7 @@ html {
   min-height:2em;
   max-height:100%;
   overflow: auto;
-  margin: 2*$default-padding;
+  // margin: 2*$default-padding;
 }
 :local(.navigation) {
   grid-area: navigation;  

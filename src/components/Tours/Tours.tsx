@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { ProgressBar } from '../ProgressBar';
+
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
@@ -28,7 +30,7 @@ class ToursComponent extends React.Component<TProps> {
   render() {
     const { tours, loaded } = this.props;
     if (!loaded) {
-      return <div className="progress-linear" />;
+      return <ProgressBar mode="indeterminate" />;
     }
 
     const renderRow = (tour: TTour) => (

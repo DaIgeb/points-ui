@@ -1,0 +1,96 @@
+@import "variables.scss";
+
+:local(.root) {
+    position: relative;
+    overflow: hidden;
+    height: 5px;
+    background-color: #bbdefb;
+  }
+  :local(.rootBuffer) {
+    background-color: transparent;
+  }
+  :local(.rootQuery) {
+    transform: rotate(180deg);
+  }
+  :local(.bar) {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    transition: transform 0.2s linear;
+    background-color: #2196f3;
+  }
+  :local(.dashed) {
+    position: absolute;
+    margin-top: 0;
+    height: 100%;
+    width: 100%;
+    background: radial-gradient(#bbdefb 0%, #bbdefb 16%, transparent 42%);
+    background-size: 10px 10px;
+    background-position: 0px -23px;
+    animation: buffer 3s infinite linear;
+  }
+  :local(.indeterminateBar1) {
+    will-change: left, right;
+    animation: indeterminate1 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+  }
+  :local(.indeterminateBar2) {
+    will-change: left, right;
+    animation: indeterminate2 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+    animation-delay: 1.15s;
+  }
+  :local(.determinateBar1) {
+    will-change: width;
+    transition: width 0.2s linear;
+  }
+  :local(.bufferBar1) {
+    z-index: 1;
+    transition: width 0.2s linear;
+  }
+  :local(.bufferBar2) {
+    transition: width 0.2s linear;
+    background-color: #bbdefb;
+  }
+
+  @keyframes indeterminate1 {
+    0% {
+      left: -35%;
+      right: 100%;
+    }
+    60% {
+      left: 100%;
+      right: -90%;
+    };
+    100% {
+      left: 100%;
+      right: -90%;
+    };
+  };
+  @keyframes indeterminate2 {
+    0% {
+      left: -200%;
+      right: 100%;
+    };
+    60% {
+      left: 107%;
+      right: -8%;
+    };
+    100% {
+      left: 107%;
+      right: -8%;
+    };
+  };
+  @keyframes buffer {
+    0% {
+      opacity: 1;
+      backgroundPosition: 0px -23px;
+    };
+    50% {
+      opacity: 0;
+      backgroundPosition: 0px -23px;
+    };
+    100% {
+      opacity: 1;
+      backgroundPosition: -200px -23px;
+    };
+  };
