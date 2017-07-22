@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteProps, Route } from 'react-router-dom';
+import { RouteProps, Route, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import * as fromReducers from '../reducers';
 
@@ -9,12 +9,13 @@ type TStateProps = {
   user: TProfile | undefined
 };
 type TDispatchProps = {};
-type TProps = TOwnProps & TStateProps & TDispatchProps;
-const mapStateToProps = (state: TState, ownProps: TOwnProps) => ({
+type TProps = TOwnProps & TStateProps & TDispatchProps & RouteComponentProps<{}>;
+const mapStateToProps = (state: TState, ownProps: TOwnProps & RouteComponentProps<{}>) => ({
   ...ownProps,
   user: fromReducers.getProfile(state)
 });
-export const PrivateRoute = connect(mapStateToProps, {})((props: TProps) => {
+
+const PrivateRouteComponent = connect(mapStateToProps, {})((props: TProps) => {
   const { roles, user, component, render, ...rest } = props;
   if (user) {
     const { roles: userRoles } = user;
@@ -28,3 +29,5 @@ export const PrivateRoute = connect(mapStateToProps, {})((props: TProps) => {
   return <Route {...rest} render={() => <p>Please login</p>} />;
 
 });
+
+export const PrivateRoute = withRouter<TOwnProps>(PrivateRouteComponent);
