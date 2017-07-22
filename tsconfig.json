@@ -18,7 +18,8 @@
     "noUnusedLocals": true,
     "typeRoots": [
       "node_modules/@types",
-      "src/typings.d.ts"
+      "src/typings.d.ts",
+      "src/material-ui.d.ts"
     ],
     "types": [
       "webpack-env",
@@ -28,7 +29,8 @@
   },
   "file":[
     "src/index.tsx",
-    "src/typings.d.ts"
+    "src/typings.d.ts",
+    "src/material-ui.d.ts"
   ],
   "exclude": [
     "node_modules",
