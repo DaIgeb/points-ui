@@ -1,0 +1,18 @@
+@import "../../styles/variables.scss";
+
+:local(.root) {
+  display: 'inline-flex';
+  flex-direction: 'column';
+  position: 'relative';
+}
+:local(.marginNormal) {
+  margin-top: $theme-spacing-unit * 2;
+  margin-bottom: $theme-spacing-unit;
+}
+:local(.marginDense) {
+  margin-top: $theme-spacing-unit;
+  margin-bottom: $theme-spacing-unit / 2;
+}
+:local(.fullWidth) {
+  width: '100%';
+}

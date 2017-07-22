@@ -1,0 +1,14 @@
+:local(.input) {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    top: 0;
+    left: 0;
+    position: absolute;
+    transition: transform 200ms cubic-bezier(0.0, 0.0, 0.2, 1) 0ms;
+    transform: translate(0, 24px) scale(1);
+    transform-origin: top left;
+    color: rgba(0, 0, 0, 0.54);
+  }
+}

@@ -1,0 +1,21 @@
+@import "../../styles/variables.scss";
+
+:local(.root) {
+  color: $theme-palette-input-helperText;
+  font-family: $theme-typography-fontFamily;
+  font-size: 12;
+  text-align: 'left';
+  margin-top: $theme-spacing-unit;
+  line-height: '1em';
+  min-height: '1em';
+  margin: 0;
+};
+:local(.dense) {
+  margin-top: $theme-spacing-unit/ 2;
+};
+:local(.error) {
+  color: $theme-palette-error-A400;
+};
+:local(.disabled) {
+  color: $theme-palette-input-disabled;
+};

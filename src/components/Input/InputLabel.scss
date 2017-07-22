@@ -1,0 +1,22 @@
+@import "../../styles/variables.scss";
+
+:local(.root) {
+  transform-origin: top left;
+}
+:local(.formControl) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  // slight alteration to spec spacing to match visual spec result
+  transform: translate(0, $theme-spacing-unit * 3 - 1) scale(1);
+}
+:local(.shrink) {
+  transform: translate(0, 1.5px) scale(0.75);
+  transform-origin: top left;
+}
+:local(.animated) {
+  
+}
+:local(.disabled) {
+  color: $theme-palette-input-disabled;
+}

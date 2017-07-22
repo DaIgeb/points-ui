@@ -1,0 +1,20 @@
+@import "../../styles/variables.scss";
+
+:local(.root) {
+  font-family: $theme-typography-fontFamily;
+  color: $theme-palette-input-labelText;
+  line-height: 1;
+};
+:local(.focused) {
+  @if $theme-palette-type == 'light' {
+    color: $theme-palette-primary-A700;
+  } @else {
+    color: $theme-palette-primary-A200;
+  }
+};
+:local(.error) {
+  color: $theme-palette-error-A400;
+};
+:local(.disabled) {
+  color: $theme-palette-input-disabled;
+};

@@ -1,3 +1,9 @@
+type TMuiFormControl = {
+  disabled: boolean;
+  error: boolean;
+  margin: 'dense';
+}
+
 type TState = {
   tours: TToursState;
   routes: TRoutesStates;
@@ -40,7 +46,11 @@ type TAuthState = {
   accessToken: string | undefined;
 };
 
-type TRouterState = any;
+type TRouterState = {
+  location: null | {
+    pathname: string;
+  };
+};
 
 type TTour = {
   id: string;
