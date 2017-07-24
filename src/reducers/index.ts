@@ -9,7 +9,7 @@ import * as fromPeople from './people';
 const routeReducer = routerReducer as Reducer<RouterState>;
 
 export const rootReducer = combineReducers<TState>({
-  auth: fromAuth.reducer,  
+  auth: fromAuth.reducer,
   routing: routeReducer,
   tours: fromTours.reducer,
   people: fromPeople.reducer,
@@ -26,6 +26,8 @@ export const areToursLoaded = (state: TState) => fromTours.areLoaded(state.tours
 export const getPeople = (state: TState) => fromPeople.getAll(state.people);
 export const isLoadingPeople = (state: TState) => fromPeople.isLoading(state.people);
 export const arePeopleLoaded = (state: TState) => fromPeople.areLoaded(state.people);
+export const addPersonTemplate = (state: TState) => fromPeople.getAddTemplate(state.people);
+export const addPersonState = (state: TState) => fromPeople.getAddState(state.people);
 
 export const getRoutes = (state: TState) => fromRoutes.getAll(state.routes);
 export const isLoadingRoutes = (state: TState) => fromRoutes.isLoading(state.routes);

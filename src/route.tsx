@@ -3,6 +3,8 @@ import { Provider, connect } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { Switch, RouteComponentProps, withRouter } from 'react-router-dom';
 
+import { MuiThemeProvider } from 'material-ui/styles';
+
 import { history } from './history';
 import { CoreLayout } from './layouts/CoreLayout';
 import { Header, Navigation, Tours, People, Routes, PrivateRoute } from './components';
@@ -55,7 +57,9 @@ export const makeMainRoutes = () => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <App />
+        <MuiThemeProvider>
+          <App />
+        </MuiThemeProvider>
       </ConnectedRouter>
     </Provider>
   );

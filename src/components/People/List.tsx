@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { push } from 'react-router-redux';
 
-import { ProgressBar } from '../ProgressBar';
+import { LinearProgress } from 'material-ui/Progress';
+import Button from 'material-ui/Button';
+import Table, { TableBody, TableCell, TableHead, TableRow, TableSortLabel } from 'material-ui/Table';
+import { EnhancedTable } from '../EnhancedTable';
 
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
@@ -34,37 +37,46 @@ class ListComponent extends React.Component<TProps> {
   render() {
     const { people, loaded, navigate } = this.props;
     if (!loaded) {
-      return <ProgressBar mode="indeterminate" />;
+      return <LinearProgress mode="indeterminate" />;
     }
 
     const renderRow = (tour: TPerson) => (
-      <tr key={tour.id}>
-        <td>{tour.lastName} {tour.firstName}</td>
-        <td>{tour.email}</td>
-        <td>{tour.user}</td>
-        <td>{new Date(tour.updatedAt).toISOString()}</td>
-        <td>{new Date(tour.createdAt).toISOString()}</td>
-      </tr>
+      <TableRow key={tour.id}>
+        <TableCell>{tour.lastName} {tour.firstName}</TableCell>
+        <TableCell>{tour.email}</TableCell>
+        <TableCell>{tour.user}</TableCell>
+        <TableCell>{new Date(tour.updatedAt).toISOString()}</TableCell>
+        <TableCell>{new Date(tour.createdAt).toISOString()}</TableCell>
+      </TableRow>
     );
 
     return (
       <div className={styles.container}>
-        <div className={styles.title}><h1>Fahrer</h1><button onClick={() => navigate('/members/add')}>Add</button></div>
+        <div className={styles.title}><h1>Fahrer</h1><Button onClick={() => navigate('/members/add')}>Add</Button></div>
         <div className={styles.content}>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>User</th>
-                <th className="date">Last update</th>
-                <th className="date">Created at</th>
-              </tr>
-            </thead>
-            <tbody>
+          <EnhancedTable
+            title="People"
+            columns={[
+              { id: 'firstName', label: 'First Name' },
+              { id: 'lastName', label: 'Last Name' },
+              { id: 'email', label: 'Email' }
+            ]}
+            data={people}
+          />
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell><TableSortLabel onClick={() => console.log('Sort by name')}>Name</TableSortLabel></TableCell>
+                <TableCell><TableSortLabel>Email</TableSortLabel></TableCell>
+                <TableCell><TableSortLabel>User</TableSortLabel></TableCell>
+                <TableCell><TableSortLabel>Last update</TableSortLabel></TableCell>
+                <TableCell><TableSortLabel>Created at</TableSortLabel></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {people.map(renderRow)}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div >
       </div >
     );

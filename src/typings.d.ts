@@ -28,7 +28,16 @@ type TRoutesStates = {
   byCode: TByCodeState<TRoute>;
   info: TInfoState;
 };
+
+type TAddStates = 'editing' | 'adding' | 'success';
+
+type TAddState<TCreate> = {
+  state: TAddStates;
+  template: Partial<TCreate>
+};
+
 type TPeopleState = {
+  add: TAddState<TPersonCreate>;
   all: TAllState;
   byCode: TByCodeState<TPerson>;
   info: TInfoState;
@@ -62,15 +71,18 @@ type TRoute = {
   updatedAt: number;
 }
 
-type TPerson = {
+type TPerson = TPersonCreate & {
   id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
   user: string;
   createdAt: number;
   updatedAt: number;
 }
+
+type TPersonCreate = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
 type TDispatchableAction = (dispatch: (action: TActions) => void, getState: () => TState) => (TActions | Promise<TActions> | void);
 
@@ -97,7 +109,18 @@ type TActions = {
     type: 'PERSON_LOAD_FAILURE';
     payload: TPerson;
   } | {
+    type: 'PERSON_ADD_SUCCESS';
+    payload: TPerson;
+  } | {
+    type: 'PERSON_ADD_FAILURE';
+    payload: any;
+  } | {
     type: 'PERSON_LOAD';
+  } | {
+    type: 'PERSON_STORE_ADDING';
+  } | {
+    type: 'PERSON_STORE_ADD';
+    payload: TPersonCreate;
   } | {
     type: 'ROUTES_LOAD_SUCCESS';
     payload: TRoute[];
@@ -112,4 +135,9 @@ declare const process: any;
 
 interface Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
+}
+
+declare module "keycode" {
+  export const keycode: <T>(event: React.SyntheticEvent<T>) => string;
+  export default keycode;
 }

@@ -504,6 +504,21 @@ declare namespace __MaterialUI {
 
   interface LinearProgressProps {
     className?: string;
+    classes?: {
+      root?: string;
+      rootBuffer?: string;
+      rootQuery?: string;
+      bar?: string;
+      dashed?: string;
+      indeterminateBar1?: string;
+      indeterminateBar2?: string;
+      determinateBar1?: string;
+      bufferBar1?: string;
+      bufferBar2?: string;
+      '@keyframes mui-indeterminate1'?: string;
+      '@keyframes mui-indeterminate2'?: string;
+      '@keyframes buffer'?: string;
+    }
   }
 
   interface LinearIndeterminateProgressProps extends LinearProgressProps {
@@ -523,47 +538,368 @@ declare namespace __MaterialUI {
   export class LinearProgress extends React.Component<LinearIndeterminateProgressProps | LinearBufferProgressProps | LinearDeterminateProgressProps> {
   }
 
-  interface TextFieldProps {
-    className?: string;
-    defaultValue?: string | number;
+  interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    color?: 'default' | 'inherit' | 'primary' | 'accent' | 'contrast';
+    component?: 'string' | React.ComponentType;
+    dense?: boolean;
+    disableFocusRipple?: boolean;
+    disableRipple?: boolean;
     disabled?: boolean;
-    errorStyle?: React.CSSProperties;
-    errorText?: React.ReactNode;
-    floatingLabelFixed?: boolean;
-    floatingLabelFocusStyle?: React.CSSProperties;
-    floatingLabelShrinkStyle?: React.CSSProperties;
-    floatingLabelStyle?: React.CSSProperties;
-    floatingLabelText?: React.ReactNode;
-    fullWidth?: boolean;
-    hintStyle?: React.CSSProperties;
-    hintText?: React.ReactNode;
-    id?: string;
-    inputStyle?: React.CSSProperties;
-    multiLine?: boolean;
-    name?: string;
-    onBlur?: React.FocusEventHandler<{}>;
-    onChange?: (e: React.FormEvent<{}>, newValue: string) => void;
-    onFocus?: React.FocusEventHandler<{}>;
-    onKeyDown?: React.KeyboardEventHandler<{}>;
-    onKeyUp?: React.KeyboardEventHandler<{}>;
-    onKeyPress?: React.KeyboardEventHandler<{}>;
-    required?: boolean;
-    rows?: number,
-    rowsMax?: number,
-    style?: React.CSSProperties;
-    textareaStyle?: React.CSSProperties;
-    type?: string;
-    underlineDisabledStyle?: React.CSSProperties;
-    underlineFocusStyle?: React.CSSProperties;
-    underlineShow?: boolean;
-    underlineStyle?: React.CSSProperties;
-    value?: string | number;
-    autoFocus?: boolean;
-    min?: number;
-    max?: number;
-    step?: number;
-    autoComplete?: string;
+    fab?: boolean;
+    raised?: boolean;
+    href?: string;
+    classes?: {
+      root?: string;
+      dense?: string;
+      label?: string;
+      flatPrimary?: string;
+      flatAccent?: string;
+      flatContrast?: string;
+      colorInherit?: string;
+      raised?: string;
+      keyboardFocused?: string;
+      raisedPrimary?: string;
+      raisedAccent?: string;
+      raisedContrast?: string;
+      disabled?: string;
+      fab?: string;
+    }
   }
+
+  export class Button extends React.Component<ButtonProps> {
+  }
+
+  interface PaperProps {
+    className?: string;
+    classes?: {
+    }
+    children: React.ReactNode;
+  }
+
+  export class Paper extends React.Component<PaperProps> {
+  }
+
+  interface TableProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    className?: string;
+    classes?: {
+      root?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class Table extends React.Component<TableProps> {
+  }
+
+  interface TableHeadProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    className?: string;
+    classes?: {
+      root?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class TableHead extends React.Component<TableHeadProps> {
+  }
+
+  interface TableSortLabelProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    active?: boolean;
+    direction?: 'asc' | 'desc';
+    className?: string;
+    classes?: {
+      root?: string;
+      active?: string;
+      icon?: string;
+      desc?: string;
+      asc?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class TableSortLabel extends React.Component<TableSortLabelProps> {
+  }
+
+  interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
+    selected?: boolean;
+    hover?: boolean;
+    className?: string;
+    classes?: {
+      root?: string;
+      head?: string;
+      footer?: string;
+      hover?: string;
+      selected?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class TableRow extends React.Component<TableRowProps> {
+  }
+
+  interface TableBodyProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    className?: string;
+    classes?: {
+      root?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class TableBody extends React.Component<TableBodyProps> {
+  }
+
+  interface TableCellProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    checkbox?: boolean;
+    compact?: boolean;
+    disablePadding?: boolean;
+    numeric?: boolean;
+    className?: string;
+    classes?: {
+      root?: string;
+      numeric?: string;
+      head?: string;
+      compact?: string;
+      checkbox?: string;
+      footer?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class TableCell extends React.Component<TableCellProps> {
+  }
+
+  interface CheckboxProps {
+    checked?: boolean;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+    className?: string;
+    classes?: {
+    }
+  }
+
+  export class Checkbox extends React.Component<CheckboxProps> {
+  }
+
+  interface IconButtonProps {
+    color?: 'default' | 'inherit' | 'primary' | 'contrast' | 'accent';
+    disabled?: boolean;
+    disableRipple?: boolean;
+    rootRef?: React.Ref<HTMLButtonElement>;
+    className?: string;
+    classes?: {
+      root?: string;
+      disabled?: string;
+      colorAccent?: string;
+      colorContrast?: string;
+      colorPrimary?: string;
+      colorInherit?: string;
+      label?: string;
+      icon?: string;
+      keyboardFocused?: string;
+    }
+  }
+
+  export class IconButton extends React.Component<IconButtonProps> {
+  }
+
+  interface ToolbarProps {
+    disableGutters?: boolean;
+    className?: string;
+    classes?: {
+      root?: string;
+      gutters?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class Toolbar extends React.Component<ToolbarProps> {
+  }
+
+  type Type =
+    | 'display4'
+    | 'display3'
+    | 'display2'
+    | 'display1'
+    | 'headline'
+    | 'title'
+    | 'subheading'
+    | 'body2'
+    | 'body1'
+    | 'caption'
+    | 'button';
+
+  type HeadlineMapping<T> = {
+    [P in keyof T]?: string;
+  }
+
+  interface TypographyProps {
+    align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
+    component?: string | React.ComponentType<any>;
+    color?: 'inherit' | 'secondary' | 'accent' | 'default';
+    gutterBottom?: boolean;
+    headlineMapping?: {
+      display4?: string;
+      display3?: string;
+      display2?: string;
+      display1?: string;
+      headline?: string;
+      title?: string;
+      subheading?: string;
+      body2?: string;
+      body1?: string;
+      caption?: string;
+      button?: string;
+    };
+    noWrap?: boolean;
+    paragraph?: boolean;
+    type?: Type;
+    className?: string;
+    classes?: {
+      root?: string;
+      display1?: string;
+      display2?: string;
+      display3?: string;
+      display4?: string;
+      headline?: string;
+      title?: string;
+      subheading?: string;
+      caption?: string;
+      body1?: string;
+      body2?: string;
+      button?: string;
+      alignLeft?: string;
+      alignCenter?: string;
+      alignRight?: string;
+      alignJustify?: string;
+      noWrap?: string;
+      gutterBottom?: string;
+      paragraph?: string;
+      colorInherit?: string;
+      colorSecondary?: string;
+      colorAccent?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class Typography extends React.Component<TypographyProps> {
+  }
+
+  interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    /**
+     * This property helps users to fill forms faster, especially on mobile devices.
+     * The name can be confusion, it's more like an autofill.
+     * You can learn about it with that article
+     * https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
+     */
+    autoComplete?: string,
+    /**
+     * If `true`, the input will be focused during the first mount.
+     */
+    autoFocus?: boolean,
+    /**
+     * @ignore
+     */
+    className?: string,
+    /**
+     * The default value of the `Input` element.
+     */
+    defaultValue?: string,
+    /**
+     * If `true`, the input will be disabled.
+     */
+    disabled?: boolean,
+    /**
+     * If `true`, the label will be displayed in an error state.
+     */
+    error?: boolean,
+    /**
+     * Properties applied to the `FormHelperText` element.
+     */
+    FormHelperTextProps?: Object,
+    /**
+     * If `true`, the input will take up the full width of its container.
+     */
+    fullWidth?: boolean,
+    /**
+     * The helper text content.
+     */
+    helperText?: string | React.ReactNode,
+    /**
+     * The CSS class name of the helper text element.
+     */
+    helperTextClassName?: string,
+    /**
+     * The id of the `input` element.
+     */
+    id?: string,
+    /**
+     * The CSS class name of the `input` element.
+     */
+    inputClassName?: string,
+    /**
+     * The CSS class name of the `Input` element.
+     */
+    InputClassName?: string,
+    /**
+     * Properties applied to the `InputLabel` element.
+     */
+    InputLabelProps?: Object,
+    /**
+     * Properties applied to the `input` element.
+     */
+    inputProps?: Object,
+    /**
+     * Properties applied to the `Input` element.
+     */
+    InputProps?: Object,
+    /**
+     * Use that property to pass a ref callback to the native input component.
+     */
+    inputRef?: Function,
+    /**
+     * The label content.
+     */
+    label?: string | React.ReactNode,
+    /**
+     * The CSS class name of the label element.
+     */
+    labelClassName?: string,
+    /**
+     * If `true`, a textarea element will be rendered instead of an input.
+     */
+    multiline?: boolean,
+    /**
+     * Name attribute of the `Input` element.
+     */
+    name?: string,
+    placeholder?: string,
+    /**
+     * If `true`, the label is displayed as required.
+     */
+    required?: boolean,
+    /**
+     * Use that property to pass a ref callback to the root component.
+     */
+    rootRef?: Function,
+    /**
+     * Number of rows to display when multiline option is set to true.
+     */
+    rows?: string | number,
+    /**
+     * Maxium number of rows to display when multiline option is set to true.
+     */
+    rowsMax?: string | number,
+    /**
+     * Type attribute of the `Input` element. It should be a valid HTML5 input type.
+     */
+    type?: string,
+    /**
+     * The value of the `Input` element, required for a controlled component.
+     */
+    value?: string | number,
+    /**
+     * If `dense` | `normal`, will adjust vertical spacing of this and contained components.
+     */
+    margin?: 'none' | 'dense' | 'normal',
+  }
+
   export class TextField extends React.Component<TextFieldProps> {
     blur(): void;
 
@@ -586,8 +922,55 @@ declare module 'material-ui/Progress' {
   export import LinearProgress = __MaterialUI.LinearProgress;
 }
 
+declare module 'material-ui/Button' {
+  export import Button = __MaterialUI.Button;
+  export default Button;
+}
+
+declare module 'material-ui/Checkbox' {
+  export import Checkbox = __MaterialUI.Checkbox;
+  export default Checkbox;
+}
+
+declare module 'material-ui/IconButton' {
+  export import IconButton = __MaterialUI.IconButton;
+  export default IconButton;
+}
+
+declare module 'material-ui/Paper' {
+  export import Paper = __MaterialUI.Paper;
+  export default Paper;
+}
+
 declare module 'material-ui/styles' {
   export import MuiThemeProvider = __MaterialUI.Styles.MuiThemeProvider;
+  export function createMuiTheme(options: any): __MaterialUI.Styles.MuiTheme;
+}
+
+declare module 'material-ui/Table' {
+  export import Table = __MaterialUI.Table;
+  export import TableBody = __MaterialUI.TableBody;
+  export import TableCell = __MaterialUI.TableCell;
+  export import TableHead = __MaterialUI.TableHead;
+  export import TableRow = __MaterialUI.TableRow;
+  export import TableSortLabel = __MaterialUI.TableSortLabel;
+
+  export default Table;
+}
+
+declare module 'material-ui/TextField' {
+  export import TextField = __MaterialUI.TextField;
+  export default TextField;
+}
+
+declare module 'material-ui/Toolbar' {
+  export import Toolbar = __MaterialUI.Toolbar;
+  export default Toolbar;
+}
+
+declare module 'material-ui/Typography' {
+  export import Typography = __MaterialUI.Typography;
+  export default Typography;
 }
 
 declare module "material-ui/styles/colors" {
@@ -876,10 +1259,6 @@ declare module "material-ui/styles/colors" {
   export const fullWhite: string;
   export const darkWhite: string;
   export const lightWhite: string;
-}
-
-declare module 'material-ui/TextField' {
-  export import TextField = __MaterialUI.TextField;
 }
 
 declare namespace __MaterialUI.Styles {
@@ -1171,4 +1550,28 @@ declare namespace __MaterialUI.Styles {
     lightWhite: string;
   }
   export var Colors: Colors;
+}
+
+declare namespace __MaterialUIIcons {
+  interface FilterListProps {
+  }
+
+  export class FilterList extends React.Component<FilterListProps> {
+  }
+
+  interface DeleteProps {
+  }
+
+  export class Delete extends React.Component<DeleteProps> {
+  }
+}
+
+declare module 'material-ui-icons/FilterList' {
+  export import FilterList = __MaterialUIIcons.FilterList;
+  export default FilterList;
+}
+
+declare module 'material-ui-icons/Delete' {
+  export import Delete = __MaterialUIIcons.Delete;
+  export default Delete;
 }

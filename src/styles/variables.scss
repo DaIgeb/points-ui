@@ -6,3 +6,11 @@ $secondary-color:    #212121;
 $primary-text-color: white;
 
 $default-padding: 5px;
+
+
+// MUI THEME
+$theme-palette-type: 'light';
+$theme-spacing-unit: 8;
+$theme-palette-text-secondary: $primary-color;
+$theme-palette-accent-A100: $primary-color;
+$theme-palette-accent-A700: $primary-color;

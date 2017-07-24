@@ -1,0 +1,23 @@
+@import "../../styles/variables.scss";
+
+:local(.root) {
+    padding-right: 2;
+  }
+:local(.highlight) {
+  @if $theme-palette-type == 'light' {
+        color: $theme-palette-accent-A700;
+        background-color: $theme-palette-accent-A100;
+  } @else {
+        color: $theme-palette-accent-A100;
+        background-color: $theme-palette-accent-A700;        
+  }
+}
+:local(.spacer) {
+  flex: 1 1 100%;
+}
+:local(.actions) {
+  color: $theme-palette-text-secondary;
+}
+:local(.title) {
+  flex: 0 0 auto;
+}
