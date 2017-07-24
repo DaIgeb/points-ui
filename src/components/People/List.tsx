@@ -5,7 +5,6 @@ import { push } from 'react-router-redux';
 
 import { LinearProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
-import Table, { TableBody, TableCell, TableHead, TableRow, TableSortLabel } from 'material-ui/Table';
 import { EnhancedTable } from '../EnhancedTable';
 
 import * as fromReducers from '../../reducers';
@@ -40,16 +39,6 @@ class ListComponent extends React.Component<TProps> {
       return <LinearProgress mode="indeterminate" />;
     }
 
-    const renderRow = (tour: TPerson) => (
-      <TableRow key={tour.id}>
-        <TableCell>{tour.lastName} {tour.firstName}</TableCell>
-        <TableCell>{tour.email}</TableCell>
-        <TableCell>{tour.user}</TableCell>
-        <TableCell>{new Date(tour.updatedAt).toISOString()}</TableCell>
-        <TableCell>{new Date(tour.createdAt).toISOString()}</TableCell>
-      </TableRow>
-    );
-
     return (
       <div className={styles.container}>
         <div className={styles.title}><h1>Fahrer</h1><Button onClick={() => navigate('/members/add')}>Add</Button></div>
@@ -58,25 +47,12 @@ class ListComponent extends React.Component<TProps> {
             title="People"
             columns={[
               { id: 'firstName', label: 'First Name' },
+              { id: 'name', label: 'Name', value: (row: TPerson) => `${row.firstName} + ${row.lastName}` },
               { id: 'lastName', label: 'Last Name' },
               { id: 'email', label: 'Email' }
             ]}
             data={people}
-          />
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell><TableSortLabel onClick={() => console.log('Sort by name')}>Name</TableSortLabel></TableCell>
-                <TableCell><TableSortLabel>Email</TableSortLabel></TableCell>
-                <TableCell><TableSortLabel>User</TableSortLabel></TableCell>
-                <TableCell><TableSortLabel>Last update</TableSortLabel></TableCell>
-                <TableCell><TableSortLabel>Created at</TableSortLabel></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {people.map(renderRow)}
-            </TableBody>
-          </Table>
+          />          
         </div >
       </div >
     );

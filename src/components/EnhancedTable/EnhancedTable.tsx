@@ -14,21 +14,16 @@ import { EnhancedTableHead } from './EnhancedTableHead';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import * as types from './types';
 
-type TRow = {
-  id: string;
-  [index: string]: object | number | string;
-};
-
 type TProps = {
   title: string;
-  data: TRow[];
+  data: types.TRow[];
   columns: types.TColumn[];
 };
 type TState = {
   order: types.TSortOrder;
-  orderBy: string;
+  orderBy: types.TColumn | undefined;
   selected: string[];
-  data: TRow[];
+  data: types.TRow[];
 };
 
 const classes = require<{ paper: string }>('./EnhancedTable.css');
@@ -39,7 +34,7 @@ export class EnhancedTable extends React.Component<TProps, TState> {
 
     this.state = {
       order: 'asc',
-      orderBy: 'calories',
+      orderBy: undefined,
       selected: [],
       data: props.data,
     };
@@ -78,7 +73,7 @@ export class EnhancedTable extends React.Component<TProps, TState> {
                   </TableCell>
                   {columns.map(c =>
                     <TableCell key={c.id} disablePadding={c.disablePadding} numeric={c.numeric}>
-                      {n[c.id]}
+                      {c.value ? c.value(n) : n[c.id]}
                     </TableCell>
                   )}
                 </TableRow>
@@ -101,11 +96,13 @@ export class EnhancedTable extends React.Component<TProps, TState> {
   private initializeProps = (props: TProps) => {
     if (props.data.length !== this.state.data.length) {
       this.setState({ data: props.data });
-      this.orderBy(this.state.orderBy, this.state.order);
+      if (this.state.orderBy) {
+        this.orderBy(this.state.orderBy, this.state.order);
+      }
     }
   }
 
-  private handleRequestSort = (event: React.MouseEvent<HTMLButtonElement>, property: string): void => {
+  private handleRequestSort = (event: React.MouseEvent<HTMLButtonElement>, property: types.TColumn): void => {
     const orderBy = property;
     let order: types.TSortOrder = 'desc';
 
@@ -116,17 +113,19 @@ export class EnhancedTable extends React.Component<TProps, TState> {
     this.orderBy(orderBy, order);
   }
 
-  private orderBy = (orderBy: string, order: types.TSortOrder) => {
+  private orderBy = (orderBy: types.TColumn, order: types.TSortOrder) => {
     const data = this.state.data.sort((a, b) => {
-      if (b[orderBy] === a[orderBy]) {
+      const aValue = orderBy.value ? orderBy.value(a) : a[orderBy.id];
+      const bValue = orderBy.value ? orderBy.value(b) : b[orderBy.id];
+      if (bValue === aValue) {
         return 0;
       }
 
       if (order === 'desc') {
-        return b[orderBy] > a[orderBy] ? -1 : 1;
+        return bValue > aValue ? -1 : 1;
       }
 
-      return a[orderBy] > b[orderBy] ? -1 : 1;
+      return aValue > bValue ? -1 : 1;
     });
 
     this.setState({ data, order, orderBy });
