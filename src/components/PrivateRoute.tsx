@@ -23,10 +23,10 @@ const PrivateRouteComponent = connect(mapStateToProps, {})((props: TProps) => {
       return <Route {...rest} component={component} render={render} />;
     }
 
-    return <Route {...rest} render={() => <p>User is missing the following roles: {roles.join()}</p>} />;
+    return <Route {...rest} render={() => <span>User is missing the following roles: {roles.join()}</span>} />;
   }
 
-  return <Route {...rest} render={() => <p>Please login</p>} />;
+  return <Route {...rest} render={() => <span>Please login</span>} />;
 
 });
 

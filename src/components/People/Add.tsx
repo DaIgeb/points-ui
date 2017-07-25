@@ -4,11 +4,19 @@ import { goBack } from 'react-router-redux';
 
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+import Dialog from 'material-ui/Dialog';
+import { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
 
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
-const styles = require<{ title: string; content: string; add: string; container: string; }>('./People.css');
+const styles = require<{
+  title: string;
+  dialog: string;
+  content: string;
+  add: string;
+  container: string;
+}>('./People.css');
 
 type TOwnProps = {};
 type TStateProps = {
@@ -26,18 +34,18 @@ class AddComponent extends React.Component<TProps> {
   render() {
     const { back, storeAdd } = this.props;
     return (
-      <div className={styles.container}>
-        <div className={styles.title}><h1>Fahrer</h1><Button onClick={() => back()}>Close</Button></div>
-        <div className={styles.content}>
+      <Dialog open={true} maxWidth="sm" classes={{ paper: styles.dialog }}>
+        <DialogTitle>Fahrer hinzufügen</DialogTitle>
+        <DialogContent className={styles.content}>
           <TextField label="First Name" onChange={event => storeAdd({ firstName: event.target.value })} />
           <TextField label="Last Name" onChange={event => storeAdd({ lastName: event.target.value })} />
           <TextField label="Email" type="email" onChange={event => storeAdd({ email: event.target.value })} />
-          <div>
-            <Button color="primary" onClick={() => this.save()}>Save</Button>
-            <Button onClick={() => this.props.back()}>Cancel</Button>
-          </div>
-        </div >
-      </div >
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={back} color="primary">Cancel</Button>
+          <Button onClick={this.save} color="primary">Save</Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 

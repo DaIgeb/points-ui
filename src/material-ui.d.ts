@@ -570,13 +570,56 @@ declare namespace __MaterialUI {
   }
 
   interface PaperProps {
+    component?: string | React.ComponentType;
+    elevation?: number;
+    square?: boolean;
     className?: string;
     classes?: {
+      root?: string;
+      rounded?: string;
+      shadow0?: string;
+      shadow1?: string;
+      shadow2?: string;
+      shadow3?: string;
+      shadow4?: string;
+      shadow5?: string;
+      shadow6?: string;
+      shadow7?: string;
+      shadow8?: string;
+      shadow9?: string;
+      shadow10?: string;
+      shadow11?: string;
+      shadow12?: string;
+      shadow13?: string;
+      shadow14?: string;
+      shadow15?: string;
+      shadow16?: string;
+      shadow17?: string;
+      shadow18?: string;
+      shadow19?: string;
+      shadow20?: string;
+      shadow21?: string;
+      shadow22?: string;
+      shadow23?: string;
+      shadow24?: string;
     }
     children: React.ReactNode;
   }
 
   export class Paper extends React.Component<PaperProps> {
+  }
+
+  interface SvgIconProps extends React.SVGAttributes<SVGElement> {
+    titleAccess?: string;
+    viewBox?: string;
+    className?: string;
+    classes?: {
+      root?: string;
+    }
+    children?: React.ReactNode;
+  }
+
+  export class SvgIcon extends React.Component<SvgIconProps> {
   }
 
   interface TableProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -677,7 +720,76 @@ declare namespace __MaterialUI {
   export class Checkbox extends React.Component<CheckboxProps> {
   }
 
-  interface IconButtonProps {
+  interface DialogProps {
+    className?: string;
+    classes?: {
+      root?: string;
+      paper?: string;
+      paperWidthXs?: string;
+      paperWidthSm?: string;
+      paperWidthMd?: string;
+      fullScreen?: string;
+    }
+    children: React.ReactNode;
+    fullScreen?: boolean,
+    ignoreBackdropClick?: boolean,
+    ignoreEscapeKeyUp?: boolean,
+    enterTransitionDuration?: number, // eslint-disable-line react/sort-prop-types
+    leaveTransitionDuration?: number,
+    maxWidth?: 'xs' | 'sm' | 'md',
+    onBackdropClick?: () => void,
+    onEnter?: TransitionCallback,
+    onEntering?: TransitionCallback,
+    onEntered?: TransitionCallback, // eslint-disable-line react/sort-prop-types
+    onEscapeKeyUp?: () => void, // eslint-disable-line react/sort-prop-types
+    onExit?: TransitionCallback,
+    onExiting?: TransitionCallback,
+    onExited?: TransitionCallback, // eslint-disable-line react/sort-prop-types
+    onRequestClose?: () => void,
+    open?: boolean,
+    transition?: () => void | React.ReactNode,
+  }
+
+  export class Dialog extends React.Component<DialogProps> {
+  }
+
+  interface DialogActionsProps {
+    className?: string;
+    classes?: {
+      root?: string;
+      action?: string;
+      button?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class DialogActions extends React.Component<DialogActionsProps> {
+  }
+
+  interface DialogContentProps {
+    className?: string;
+    classes?: {
+      root?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class DialogContent extends React.Component<DialogContentProps> {
+  }
+
+  interface DialogTitleProps {
+    disableTypography?: boolean;
+    className?: string;
+    classes?: {
+      root?: string;
+    }
+    children: React.ReactNode;
+  }
+
+  export class DialogTitle extends React.Component<DialogTitleProps> {
+  }
+
+  interface IconButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
     color?: 'default' | 'inherit' | 'primary' | 'contrast' | 'accent';
     disabled?: boolean;
     disableRipple?: boolean;
@@ -697,6 +809,76 @@ declare namespace __MaterialUI {
   }
 
   export class IconButton extends React.Component<IconButtonProps> {
+  }
+
+  type TransitionCallback = (element: HTMLElement) => void;
+
+  interface ListItemProps extends React.HTMLAttributes<HTMLButtonElement> {
+    button?: boolean,
+    children?: React.ReactNode,
+    className?: string,
+    component?: string | React.ComponentType,
+    dense?: boolean,
+    disabled?: boolean,
+    disableGutters?: boolean,
+    divider?: boolean,
+    classes?: {
+      root?: string;
+      container?: string;
+      keyboardFocused?: string;
+      default?: string;
+      dense?: string;
+      disabled?: string;
+      divider?: string;
+      gutters?: string;
+      button?: string;
+    }
+  }
+
+  export class ListItem extends React.Component<ListItemProps> {
+  }
+
+  interface MenuProps {
+    open?: boolean;
+    transitionDuration?: 'auto';
+    anchorEl?: EventTarget;
+    MenuListProps?: MenuListProps;
+    onEnter?: TransitionCallback,
+    onEntering?: TransitionCallback,
+    onEntered?: TransitionCallback, // eslint-disable-line react/sort-prop-types
+    onExit?: TransitionCallback,
+    onExiting?: TransitionCallback,
+    onExited?: TransitionCallback, // eslint-disable-line react/sort-prop-types
+    onRequestClose?: Function,
+    className?: string;
+    classes?: {
+      root?: string;
+    };
+    children?: React.ReactNode;
+  }
+
+  export class Menu extends React.Component<MenuProps> {
+  }
+
+  interface MenuItemProps extends React.HTMLAttributes<HTMLButtonElement> {
+    className?: string;
+    classes?: {
+      root?: string;
+      selected?: string;
+    };
+    component?: string | React.ComponentType;
+    role?: string;
+    selected?: boolean;
+  }
+
+  export class MenuItem extends React.Component<MenuItemProps> {
+  }
+
+  interface MenuListProps {
+    className?: string;
+    onBlur?: string | React.ComponentType;
+    onKeyDown?: (event: React.SyntheticEvent<any>, key: string) => void;
+    children?: React.ReactNode;
   }
 
   interface ToolbarProps {
@@ -932,14 +1114,35 @@ declare module 'material-ui/Checkbox' {
   export default Checkbox;
 }
 
+declare module 'material-ui/Dialog' {
+  export import Dialog = __MaterialUI.Dialog;
+  export import DialogActions = __MaterialUI.DialogActions;
+  export import DialogContent = __MaterialUI.DialogContent;
+  export import DialogTitle = __MaterialUI.DialogTitle;
+  
+  export default Dialog;
+}
+
 declare module 'material-ui/IconButton' {
   export import IconButton = __MaterialUI.IconButton;
   export default IconButton;
 }
 
+declare module 'material-ui/Menu' {
+  export import Menu = __MaterialUI.Menu;
+  export import MenuItem = __MaterialUI.MenuItem;
+  export default Menu;
+}
+
 declare module 'material-ui/Paper' {
   export import Paper = __MaterialUI.Paper;
   export default Paper;
+}
+
+declare module 'material-ui/SvgIcon' {
+  export import SvgIcon = __MaterialUI.SvgIcon;
+  export import SvgIconProps = __MaterialUI.SvgIconProps;
+  export default SvgIcon;
 }
 
 declare module 'material-ui/styles' {
@@ -1553,25 +1756,39 @@ declare namespace __MaterialUI.Styles {
 }
 
 declare namespace __MaterialUIIcons {
-  interface FilterListProps {
+  interface IconProps {
   }
 
-  export class FilterList extends React.Component<FilterListProps> {
-  }
-
-  interface DeleteProps {
-  }
-
-  export class Delete extends React.Component<DeleteProps> {
+  export class Icon extends React.Component<IconProps> {
   }
 }
 
 declare module 'material-ui-icons/FilterList' {
-  export import FilterList = __MaterialUIIcons.FilterList;
-  export default FilterList;
+  export import SvgIcon = __MaterialUI.SvgIcon;
+  export default SvgIcon;
 }
 
 declare module 'material-ui-icons/Delete' {
-  export import Delete = __MaterialUIIcons.Delete;
-  export default Delete;
+  export import SvgIcon = __MaterialUI.SvgIcon;
+  export default SvgIcon;
+}
+declare module 'material-ui-icons/MoreVert' {
+  export import SvgIcon = __MaterialUI.SvgIcon;
+  export default SvgIcon;
+}
+declare module 'material-ui-icons/Add' {
+  export import SvgIcon = __MaterialUI.SvgIcon;
+  export default SvgIcon;
+}
+declare module 'material-ui-icons/AddBox' {
+  export import SvgIcon = __MaterialUI.SvgIcon;
+  export default SvgIcon;
+}
+declare module 'material-ui-icons/AddCircle' {
+  export import SvgIcon = __MaterialUI.SvgIcon;
+  export default SvgIcon;
+}
+declare module 'material-ui-icons/AddCircleOutline' {
+  export import SvgIcon = __MaterialUI.SvgIcon;
+  export default SvgIcon;
 }

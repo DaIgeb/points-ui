@@ -18,6 +18,7 @@ type TProps = {
   title: string;
   data: types.TRow[];
   columns: types.TColumn[];
+  renderToolbarActions: (numSelected: number, getSelection: () => types.TRow[]) => React.ReactNode;
 };
 type TState = {
   order: types.TSortOrder;
@@ -44,9 +45,47 @@ export class EnhancedTable extends React.Component<TProps, TState> {
     const { title, columns } = this.props;
     const { data, order, orderBy, selected } = this.state;
 
+    // tslint:disable-next-line
+    const date = (value: any) => {
+      if (typeof value === 'number') {
+        return new Date(value);
+      }
+      if (typeof value === 'string') {
+        return new Date(value);
+      }
+
+      return undefined;
+    };
+
+    const renderRowValue = (column: types.TColumn, row: types.TRow) => {
+      if (column.value) {
+        return column.value(row);
+      }
+
+      const value = row[column.id];
+      switch (column.type) {
+        case 'date':
+          const dateValue = date(value);
+          if (dateValue) {
+            return `${dateValue.toLocaleDateString()}`;
+          }
+
+          return '';
+        case 'datetime':
+          const dateAndTime = date(value);
+          if (dateAndTime) {
+            return `${dateAndTime.toLocaleDateString()} ${dateAndTime.toLocaleTimeString()}`;
+          }
+
+          return '';
+        default:
+          return value;
+      }
+    };
+
     return (
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} title={title} />
+        <EnhancedTableToolbar numSelected={selected.length} title={title} renderActions={this.toolbarActions} />
         <Table>
           <EnhancedTableHead
             columns={columns}
@@ -72,8 +111,8 @@ export class EnhancedTable extends React.Component<TProps, TState> {
                     <Checkbox checked={isSelected} />
                   </TableCell>
                   {columns.map(c =>
-                    <TableCell key={c.id} disablePadding={c.disablePadding} numeric={c.numeric}>
-                      {c.value ? c.value(n) : n[c.id]}
+                    <TableCell key={c.id} disablePadding={c.disablePadding} numeric={c.type === 'number'}>
+                      {renderRowValue(c, n)}
                     </TableCell>
                   )}
                 </TableRow>
@@ -92,6 +131,10 @@ export class EnhancedTable extends React.Component<TProps, TState> {
   componentWillReceiveProps(nextProps: TProps) {
     this.initializeProps(nextProps);
   }
+
+  private toolbarActions = (numSelected: number) => this.props.renderToolbarActions(numSelected, this.getSelectedRows);
+
+  private getSelectedRows = () => this.state.data.filter((row) => this.isSelected(row.id));
 
   private initializeProps = (props: TProps) => {
     if (props.data.length !== this.state.data.length) {

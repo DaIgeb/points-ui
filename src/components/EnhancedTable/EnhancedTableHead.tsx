@@ -35,7 +35,7 @@ export class EnhancedTableHead extends React.Component<TProps> {
             return (
               <TableCell
                 key={column.id}
-                numeric={column.numeric}
+                numeric={column.type === 'number'}
                 disablePadding={column.disablePadding}
               >
                 <TableSortLabel

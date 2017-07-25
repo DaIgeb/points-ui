@@ -1,5 +1,9 @@
 @import "variables.scss";
 
+:local(.dialog) {
+  width: 500px;
+}
+
 :local(.container) {
   display: flex;
   flex-direction: column;

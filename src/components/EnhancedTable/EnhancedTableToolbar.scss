@@ -16,6 +16,7 @@
   flex: 1 1 100%;
 }
 :local(.actions) {
+  display: flex;
   color: $theme-palette-text-secondary;
 }
 :local(.title) {

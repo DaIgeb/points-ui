@@ -4,7 +4,11 @@ import { RouteComponentProps } from 'react-router-dom';
 import { push } from 'react-router-redux';
 
 import { LinearProgress } from 'material-ui/Progress';
-import Button from 'material-ui/Button';
+// import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import AddCircle from 'material-ui-icons/AddCircle';
+import Delete from 'material-ui-icons/Delete';
+
 import { EnhancedTable } from '../EnhancedTable';
 
 import * as fromReducers from '../../reducers';
@@ -39,20 +43,37 @@ class ListComponent extends React.Component<TProps> {
       return <LinearProgress mode="indeterminate" />;
     }
 
+    const renderDate = (seconds: number) => {
+      const date = new Date(seconds);
+
+      return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+    };
+
     return (
       <div className={styles.container}>
-        <div className={styles.title}><h1>Fahrer</h1><Button onClick={() => navigate('/members/add')}>Add</Button></div>
         <div className={styles.content}>
           <EnhancedTable
-            title="People"
+            title="Fahrer"
             columns={[
-              { id: 'firstName', label: 'First Name' },
-              { id: 'name', label: 'Name', value: (row: TPerson) => `${row.firstName} + ${row.lastName}` },
-              { id: 'lastName', label: 'Last Name' },
-              { id: 'email', label: 'Email' }
+              { id: 'name', label: 'Name', value: (row: TPerson) => `${row.firstName} ${row.lastName}` },
+              { id: 'email', label: 'Email' },
+              { id: 'createdAt', label: 'Erstellt am', value: (row: TPerson) => renderDate(row.createdAt) },
+              { id: 'updateAt', label: 'Aktualisiert am', value: (row: TPerson) => renderDate(row.updatedAt) },
+              { id: 'user', label: 'User' }
             ]}
+            renderToolbarActions={(numSelected: number) => {
+              if (numSelected > 0) {
+                return <IconButton>
+                  <Delete />
+                </IconButton>;
+              }
+
+              return <IconButton onClick={() => navigate('/members/add')}>
+                <AddCircle />
+              </IconButton>;
+            }}
             data={people}
-          />          
+          />
         </div >
       </div >
     );

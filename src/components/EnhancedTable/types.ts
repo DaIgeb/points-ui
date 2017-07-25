@@ -7,7 +7,7 @@ export type TRow = {
 
 export type TColumn = {
   id: string;
-  numeric?: boolean;
+  type?: 'string' | 'number' | 'date' | 'datetime'
   disablePadding?: boolean;
   label: string;
   component?: React.ComponentType;
