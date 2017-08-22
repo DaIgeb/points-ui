@@ -18,19 +18,18 @@
     "noUnusedLocals": true,
     "typeRoots": [
       "node_modules/@types",
-      "src/typings.d.ts",
-      "src/material-ui.d.ts"
+      "src/typings.d.ts"
     ],
     "types": [
       "webpack-env",
       "auth0-js",
-      "auth0-lock"
+      "auth0-lock",
+      "material-ui"
     ]
   },
   "file":[
     "src/index.tsx",
-    "src/typings.d.ts",
-    "src/material-ui.d.ts"
+    "src/typings.d.ts"
   ],
   "exclude": [
     "node_modules",
