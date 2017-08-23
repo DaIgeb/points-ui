@@ -25,13 +25,28 @@ type TProps = TStateProps & TDispatchProps & TOwnProps;
 class AddComponent extends React.Component<TProps> {
   render() {
     const { back, storeAdd } = this.props;
+    const onChanged =
+      (handleChange: (value: string) => void): React.ReactEventHandler<HTMLInputElement | HTMLDivElement> =>
+        (event) => {
+          const target = event.currentTarget;
+          if (target.nodeName === 'INPUT') {
+            const inputTarget = target as HTMLInputElement;
+
+            handleChange(inputTarget.value);
+          }
+        };
+
+    const onFirstNameChanged = onChanged((value) => storeAdd({ firstName: value }));
+    const onLastNameChanged = onChanged((value) => storeAdd({ lastName: value }));
+    const onEmailChanged = onChanged((value) => storeAdd({ email: value }));
+
     return (
       <div className={styles.container}>
         <div className={styles.title}><h1>Fahrer</h1><Button onClick={() => back()}>Close</Button></div>
         <div className={styles.content}>
-          <TextField label="First Name" onChange={event => storeAdd({ firstName: event.target.value })} />
-          <TextField label="Last Name" onChange={event => storeAdd({ lastName: event.target.value })} />
-          <TextField label="Email" type="email" onChange={event => storeAdd({ email: event.target.value })} />
+          <TextField label="First Name" onChange={onFirstNameChanged} />
+          <TextField label="Last Name" onChange={onLastNameChanged} />
+          <TextField label="Email" type="email" onChange={onEmailChanged} />
           <div>
             <Button color="primary" onClick={() => this.save()}>Save</Button>
             <Button onClick={() => this.props.back()}>Cancel</Button>

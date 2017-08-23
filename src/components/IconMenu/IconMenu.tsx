@@ -5,7 +5,7 @@ import Menu from 'material-ui/Menu';
 import { MenuItem } from 'material-ui/Menu';
 
 type TState = {
-  anchorEl: EventTarget | undefined;
+  anchorEl: HTMLElement | undefined;
   open: boolean;
 };
 
