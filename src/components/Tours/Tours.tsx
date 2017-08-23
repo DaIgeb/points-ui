@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { ProgressBar } from '../ProgressBar';
+import { PrivateRoute } from '../PrivateRoute';
+import { Add } from './Add';
 
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
@@ -76,7 +78,14 @@ const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
   loaded: fromReducers.areToursLoaded(state)
 });
 
-export const Tours = connect<TStateProps, TDispatchProps, TOwnProps>(
+const ToursInt = connect<TStateProps, TDispatchProps, TOwnProps>(
   mapStateToProps,
   { reload: fromActions.tours.reload }
 )(ToursComponent);
+
+export const Tours = () => (
+  <div>
+    <PrivateRoute path="/tours/add" component={Add} exact={true} />
+    <PrivateRoute path="/tours" component={ToursInt} exact={false} />
+  </div>
+);

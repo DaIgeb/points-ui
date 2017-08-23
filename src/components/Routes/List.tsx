@@ -23,7 +23,7 @@ const styles = require<{
 
 type TOwnProps = RouteComponentProps<{}>;
 type TStateProps = {
-  people: TRoute[];
+  routes: TRoute[];
   loaded: boolean;
 };
 type TDispatchProps = {
@@ -43,7 +43,7 @@ class ListComponent extends React.Component<TProps> {
   }
 
   render() {
-    const { people, loaded, navigate } = this.props;
+    const { routes, loaded, navigate } = this.props;
     if (!loaded) {
       return <LinearProgress mode="indeterminate" />;
     }
@@ -57,11 +57,11 @@ class ListComponent extends React.Component<TProps> {
               { id: 'name', label: 'Name' },
               { id: 'distance', label: 'Distanz', type: 'number' },
               { id: 'elevation', label: 'Höhenmeter', type: 'number' },
-              { id: 'createdAt', label: 'Erstellt am', render: (row: TPerson) => <DateTime value={row.createdAt} /> },
+              { id: 'createdAt', label: 'Erstellt am', render: (row: TBase) => <DateTime value={row.createdAt} /> },
               {
                 id: 'updateAt',
                 label: 'Aktualisiert am',
-                render: (row: TPerson) => <DateTime value={row.updatedAt} />
+                render: (row: TBase) => <DateTime value={row.updatedAt} />
               },
               { id: 'user', label: 'User' }
             ]}
@@ -76,7 +76,7 @@ class ListComponent extends React.Component<TProps> {
                 <AddCircle />
               </IconButton>;
             }}
-            data={people}
+            data={routes}
           />
         </div >
       </div >
@@ -92,7 +92,7 @@ class ListComponent extends React.Component<TProps> {
 }
 
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
-  people: fromReducers.getRoutes(state),
+  routes: fromReducers.getRoutes(state),
   loaded: fromReducers.areRoutesLoaded(state)
 });
 

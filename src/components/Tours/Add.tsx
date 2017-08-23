@@ -9,7 +9,9 @@ import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/D
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
-const styles = require<{ dialog: string; content: string; add: string; container: string; }>('./Routes.css');
+import { Lookup } from '../Routes';
+
+const styles = require<{ dialog: string; content: string; add: string; container: string; }>('./Tours.css');
 
 type TOwnProps = {};
 type TStateProps = {
@@ -43,6 +45,7 @@ class AddComponent extends React.Component<TProps> {
       <Dialog open={true} maxWidth="sm" classes={{ paper: styles.dialog }}>
         <DialogTitle>Strecke hinzufügen</DialogTitle>
         <DialogContent className={styles.content}>
+          <Lookup />
           <TextField label="Name" onChange={onNameChanged} />
           <TextField label="Distance" type="number" onChange={onDistanceChanged} />
           <TextField label="Elevation" type="number" onChange={onElevationChanged} />
