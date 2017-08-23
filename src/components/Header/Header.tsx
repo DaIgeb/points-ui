@@ -17,7 +17,7 @@ type TProps = {
 };
 class HeaderComponent extends React.Component<TProps, {}> {
   render() {
-    const { profile, login, logout } = this.props;
+    const { profile, login: doLogin, logout: doLogout } = this.props;
     const userContent = profile ?
       <img src={profile.picture} alt="profile" />
       : <FontIcon size="md-48" iconName="account_circle" />;
@@ -28,7 +28,7 @@ class HeaderComponent extends React.Component<TProps, {}> {
           <IconLabel iconName="menu" size="md-24" label="RV Stadt-Winterthur Punkteliste" />
         </div>
         <div className="filler" />
-        <div className="user" onClick={profile ? logout : login}>
+        <div className="user" onClick={profile ? doLogout : doLogin}>
           {userContent}
         </div>
         <div className="logo">
@@ -43,4 +43,4 @@ const mapStateToProps = (state: TState) => ({
   profile: fromReducers.getProfile(state)
 });
 
-export const Header = connect(mapStateToProps, { login, logout })(HeaderComponent);
+export const Header: React.ComponentType<{}> = connect(mapStateToProps, { login, logout })(HeaderComponent);
