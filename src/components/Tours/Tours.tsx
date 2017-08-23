@@ -11,11 +11,11 @@ type TOwnProps = RouteComponentProps<{}>;
 type TStateProps = {
   tours: TTour[];
   loaded: boolean;
-} & TOwnProps;
+};
 type TDispatchProps = {
   reload: () => void;
 };
-type TProps = TStateProps & TDispatchProps;
+type TProps = TStateProps & TDispatchProps & TOwnProps;
 
 // const styles = require<{ 'table-header-cell': string, numeric: string }>('./Tours.css');
 
@@ -72,7 +72,6 @@ class ToursComponent extends React.Component<TProps> {
 }
 
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
-  ...ownProps,
   tours: fromReducers.getTours(state),
   loaded: fromReducers.areToursLoaded(state)
 });

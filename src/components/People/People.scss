@@ -4,6 +4,10 @@
   width: 500px;
 }
 
+:local(.current-user) {
+  background-color: yellow;
+}
+
 :local(.container) {
   display: flex;
   flex-direction: column;

@@ -37,11 +37,9 @@ class AddComponent extends React.Component<TProps> {
     const onChanged =
       (handleChange: (value: string) => void): React.ReactEventHandler<HTMLInputElement | HTMLDivElement> =>
         (event) => {
-          const target = event.currentTarget;
+          const target = event.target as HTMLInputElement;
           if (target.nodeName === 'INPUT') {
-            const inputTarget = target as HTMLInputElement;
-
-            handleChange(inputTarget.value);
+            handleChange(target.value);
           }
         };
 

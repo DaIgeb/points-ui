@@ -19,6 +19,7 @@ type TProps = {
   data: types.TRow[];
   columns: types.TColumn[];
   renderToolbarActions: (numSelected: number, getSelection: () => types.TRow[]) => React.ReactNode;
+  rowClass?: (row: types.TRow) => string | undefined;
 };
 type TState = {
   order: types.TSortOrder;
@@ -42,7 +43,7 @@ export class EnhancedTable extends React.Component<TProps, TState> {
   }
 
   render() {
-    const { title, columns } = this.props;
+    const { title, columns, rowClass } = this.props;
     const { data, order, orderBy, selected } = this.state;
 
     // tslint:disable-next-line
@@ -106,6 +107,7 @@ export class EnhancedTable extends React.Component<TProps, TState> {
                   tabIndex={-1}
                   key={n.id}
                   selected={isSelected}
+                  className={rowClass ? rowClass(n) : undefined}
                 >
                   <TableCell checkbox={true}>
                     <Checkbox checked={isSelected} />

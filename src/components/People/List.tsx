@@ -4,7 +4,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import { push } from 'react-router-redux';
 
 import { LinearProgress } from 'material-ui/Progress';
-// import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import AddCircle from 'material-ui-icons/AddCircle';
 import Delete from 'material-ui-icons/Delete';
@@ -14,11 +13,18 @@ import { EnhancedTable } from '../EnhancedTable';
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
-const styles = require<{ title: string; content: string; add: string; container: string; }>('./People.css');
+const styles = require<{
+  title: string;
+  content: string;
+  add: string;
+  container: string;
+  'current-user': string;
+}>('./People.css');
 
 type TOwnProps = RouteComponentProps<{}>;
 type TStateProps = {
   people: TPerson[];
+  profile: TProfile | undefined,
   loaded: boolean;
 };
 type TDispatchProps = {
@@ -38,7 +44,7 @@ class ListComponent extends React.Component<TProps> {
   }
 
   render() {
-    const { people, loaded, navigate } = this.props;
+    const { people, loaded, navigate, profile } = this.props;
     if (!loaded) {
       return <LinearProgress mode="indeterminate" />;
     }
@@ -72,6 +78,7 @@ class ListComponent extends React.Component<TProps> {
                 <AddCircle />
               </IconButton>;
             }}
+            rowClass={(r) => profile && r.id === profile.app_metadata.personId ? styles['current-user'] : undefined}
             data={people}
           />
         </div >
@@ -89,6 +96,7 @@ class ListComponent extends React.Component<TProps> {
 
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
   people: fromReducers.getPeople(state),
+  profile: fromReducers.getProfile(state),
   loaded: fromReducers.arePeopleLoaded(state)
 });
 
