@@ -32,3 +32,5 @@ export const addPersonState = (state: TState) => fromPeople.getAddState(state.pe
 export const getRoutes = (state: TState) => fromRoutes.getAll(state.routes);
 export const isLoadingRoutes = (state: TState) => fromRoutes.isLoading(state.routes);
 export const areRoutesLoaded = (state: TState) => fromRoutes.areLoaded(state.routes);
+export const addRouteTemplate = (state: TState) => fromRoutes.getAddTemplate(state.routes);
+export const addRouteState = (state: TState) => fromRoutes.getAddState(state.routes);

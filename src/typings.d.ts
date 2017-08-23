@@ -24,6 +24,7 @@ type TToursState = {
   info: TInfoState;
 };
 type TRoutesStates = {
+  add: TAddState<TRouteCreate>;
   all: TAllState;
   byCode: TByCodeState<TRoute>;
   info: TInfoState;
@@ -51,47 +52,40 @@ type TAuthState = {
 
 type TRouterState = any;
 
-type TTour = {
-  id: string;
+type TTour = TTourCreate & TBase;
+type TTourCreate = {
   route: string;
   points: 15 | 20 | 40 | 80 | 150;
   participants: { id: string; }[];
-  user: string;
-  createdAt: number;
-  updatedAt: number;
 }
 
-type TRoute = {
-  id: string;
-  name: string;
-  elevation: number;
-  distance: number;
-  user: string;
-  createdAt: number;
-  updatedAt: number;
-}
-
-type TPerson = TPersonCreate & {
-  id: string;
-  user: string;
-  createdAt: number;
-  updatedAt: number;
-}
-
+type TPerson = TPersonCreate & TBase;
 type TPersonCreate = {
   firstName: string;
   lastName: string;
   email: string;
 };
 
+type TRoute = TRouteCreate & TBase;
+type TRouteCreate = {
+  name: string;
+  elevation: number;
+  distance: number;
+}
+
+type TBase = {
+  id: string;
+  user: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
 type TDispatchableAction = (dispatch: (action: TActions) => void, getState: () => TState) => (TActions | Promise<TActions> | void);
 
 type TActions = {
-  type: 'LOGOUT';
+  type: 'LOGIN_SUCCESS';
+  payload: TAuthState;
 } | {
-    type: 'LOGIN_SUCCESS';
-    payload: TAuthState;
-  } | {
     type: 'LOGIN_FAILED';
     payload: object;
   } | {
@@ -100,8 +94,6 @@ type TActions = {
   } | {
     type: 'TOURS_LOAD_FAILURE';
     payload: TTour;
-  } | {
-    type: 'TOURS_LOAD';
   } | {
     type: 'PERSON_LOAD_SUCCESS';
     payload: TPerson[];
@@ -112,12 +104,10 @@ type TActions = {
     type: 'PERSON_ADD_SUCCESS';
     payload: TPerson;
   } | {
-    type: 'PERSON_ADD_FAILURE';
+    type: 'PERSON_ADD_FAILURE' | 'ROUTE_ADD_FAILURE';
     payload: any;
   } | {
-    type: 'PERSON_LOAD';
-  } | {
-    type: 'PERSON_STORE_ADDING';
+    type: 'PERSON_LOAD' | 'PERSON_STORE_ADDING' | 'ROUTES_LOAD' | 'ROUTE_STORE_ADDING' | 'TOURS_LOAD' | 'LOGOUT';
   } | {
     type: 'PERSON_STORE_ADD';
     payload: TPersonCreate;
@@ -128,7 +118,12 @@ type TActions = {
     type: 'ROUTES_LOAD_FAILURE';
     payload: TRoute;
   } | {
-    type: 'ROUTES_LOAD';
+    type: 'ROUTE_STORE_ADD';
+    payload: TRouteCreate;
+  }
+  | {
+    type: 'ROUTE_ADD_SUCCESS';
+    payload: TRoute;
   };
 
 declare const process: any;

@@ -9,23 +9,21 @@ import AddCircle from 'material-ui-icons/AddCircle';
 import Delete from 'material-ui-icons/Delete';
 
 import { EnhancedTable } from '../EnhancedTable';
-import { DateTime } from '../DateTime';
 
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
+import { DateTime } from '../DateTime';
 
 const styles = require<{
   title: string;
   content: string;
   add: string;
   container: string;
-  'current-user': string;
-}>('./People.css');
+}>('./Routes.css');
 
 type TOwnProps = RouteComponentProps<{}>;
 type TStateProps = {
-  people: TPerson[];
-  profile: TProfile | undefined,
+  people: TRoute[];
   loaded: boolean;
 };
 type TDispatchProps = {
@@ -45,7 +43,7 @@ class ListComponent extends React.Component<TProps> {
   }
 
   render() {
-    const { people, loaded, navigate, profile } = this.props;
+    const { people, loaded, navigate } = this.props;
     if (!loaded) {
       return <LinearProgress mode="indeterminate" />;
     }
@@ -56,13 +54,10 @@ class ListComponent extends React.Component<TProps> {
           <EnhancedTable
             title="Fahrer"
             columns={[
-              { id: 'name', label: 'Name', value: (row: TPerson) => `${row.firstName} ${row.lastName}` },
-              { id: 'email', label: 'Email' },
-              {
-                id: 'createdAt',
-                label: 'Erstellt am',
-                render: (row: TPerson) => <DateTime value={row.createdAt} />
-              },
+              { id: 'name', label: 'Name' },
+              { id: 'distance', label: 'Distanz', type: 'number' },
+              { id: 'elevation', label: 'Höhenmeter', type: 'number' },
+              { id: 'createdAt', label: 'Erstellt am', render: (row: TPerson) => <DateTime value={row.createdAt} /> },
               {
                 id: 'updateAt',
                 label: 'Aktualisiert am',
@@ -77,11 +72,10 @@ class ListComponent extends React.Component<TProps> {
                 </IconButton>;
               }
 
-              return <IconButton onClick={() => navigate('/members/add')}>
+              return <IconButton onClick={() => navigate('/routes/add')}>
                 <AddCircle />
               </IconButton>;
             }}
-            rowClass={(r) => profile && r.id === profile.app_metadata.personId ? styles['current-user'] : undefined}
             data={people}
           />
         </div >
@@ -98,15 +92,14 @@ class ListComponent extends React.Component<TProps> {
 }
 
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
-  people: fromReducers.getPeople(state),
-  profile: fromReducers.getProfile(state),
-  loaded: fromReducers.arePeopleLoaded(state)
+  people: fromReducers.getRoutes(state),
+  loaded: fromReducers.areRoutesLoaded(state)
 });
 
 export const List = connect<TStateProps, TDispatchProps, TOwnProps>(
   mapStateToProps,
   {
-    reload: fromActions.people.reload,
+    reload: fromActions.routes.reload,
     navigate: push
   }
 )(ListComponent);

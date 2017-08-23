@@ -10,6 +10,11 @@ const byIdReducer = (state: { [id: string]: TRoute } = {}, action: TActions) => 
         }),
         {}
       );
+    case 'ROUTE_ADD_SUCCESS':
+      return {
+        ...state,
+        [action.payload.id]: action.payload
+      };
     default:
       return state;
   }

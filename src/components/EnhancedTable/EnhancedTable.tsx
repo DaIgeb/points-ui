@@ -10,6 +10,8 @@ import {
 import Paper from 'material-ui/Paper';
 import Table from 'material-ui/Table';
 
+import { DateTime } from '../DateTime';
+
 import { EnhancedTableHead } from './EnhancedTableHead';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import * as types from './types';
@@ -59,11 +61,11 @@ export class EnhancedTable extends React.Component<TProps, TState> {
     };
 
     const renderRowValue = (column: types.TColumn, row: types.TRow) => {
-      if (column.value) {
-        return column.value(row);
+      if (column.render) {
+        return column.render(row);
       }
 
-      const value = row[column.id];
+      const value = column.value ? column.value(row) : row[column.id];
       switch (column.type) {
         case 'date':
           const dateValue = date(value);
@@ -75,7 +77,7 @@ export class EnhancedTable extends React.Component<TProps, TState> {
         case 'datetime':
           const dateAndTime = date(value);
           if (dateAndTime) {
-            return `${dateAndTime.toLocaleDateString()} ${dateAndTime.toLocaleTimeString()}`;
+            return <DateTime value={dateAndTime}/>;
           }
 
           return '';
