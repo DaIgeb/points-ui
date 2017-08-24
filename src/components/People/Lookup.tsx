@@ -10,8 +10,9 @@ import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
 type TOwnProps = {
-  value?: string;
-  onChange: (selectedItem: string) => void;
+  values: string[];
+  multiple?: boolean;
+  onChange: (selectedItems: string[]) => void;
 };
 type TStateProps = {
   people: { key: string; caption: string; }[];
@@ -41,14 +42,15 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
   }
 
   render() {
-    const { people, onChange, loaded, value } = this.props;
+    const { people, onChange, loaded, values, multiple } = this.props;
     if (!loaded) {
       return <LinearProgress mode="indeterminate" />;
     }
 
     return (
       <BaseLookup
-        value={value}
+        values={values}
+        multiple={multiple || false}
         items={people}
         onChange={onChange}
         label="Fahrer"

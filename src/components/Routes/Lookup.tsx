@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 
 import { LinearProgress } from 'material-ui/Progress';
 
@@ -13,10 +14,10 @@ type TViewOwnProps = {
 };
 
 type TEditOwnProps = TViewOwnProps & {
-  onChange: (selectedItem: string) => void;
+  onChange: (selectedItem: string | undefined) => void;
 };
 type TStateProps = {
-  routes: TRoute[];
+  routes: { key: string; caption: string; }[];
   loaded: boolean;
 };
 type TDispatchProps = {
@@ -44,19 +45,28 @@ class LookupEditComponent extends React.Component<TEditProps, TComponentState> {
   }
 
   render() {
-    const { routes, onChange, loaded, value } = this.props;
+    const { routes, loaded, value } = this.props;
     if (!loaded) {
       return <LinearProgress mode="indeterminate" />;
     }
 
     return (
       <BaseLookup
-        value={value}
-        items={routes.map(r => ({ key: r.id, caption: r.name }))}
-        onChange={onChange}
+        values={value ? [value] : []}
+        multiple={false}
+        items={routes}
+        onChange={this.onRouteChanged}
         label="Strecke"
       />
     );
+  }
+
+  private onRouteChanged = (values: string[]) => {
+    if (values.length > 0) {
+      const { onChange } = this.props;
+
+      onChange(values[0]);
+    }
   }
 
   private initialize = (props: TEditProps) => {
@@ -82,9 +92,9 @@ class LookupViewComponent extends React.Component<TViewProps> {
     }
 
     if (value) {
-      const route = routes.find(r => r.id === value);
+      const route = routes.find(r => r.key === value);
       if (route) {
-        return <p>{route.name}</p>;
+        return <p>{route.caption}</p>;
       }
 
       return <p>Unbekannt {value}</p>;
@@ -100,8 +110,15 @@ class LookupViewComponent extends React.Component<TViewProps> {
   }
 }
 
+const mapRoutesSelector = createSelector(
+  (args: { routes: TRoute[] }) => args.routes,
+  routes => routes
+    .map(r => ({ key: r.id, caption: r.name }))
+    .sort((a, b) => a.caption.localeCompare(b.caption))
+);
+
 const mapStateToProps = (state: TState, ownProps: TEditOwnProps): TStateProps => ({
-  routes: fromReducers.getRoutes(state),
+  routes: mapRoutesSelector({ routes: fromReducers.getRoutes(state) }),
   loaded: fromReducers.areRoutesLoaded(state)
 });
 const bindActionCreators: TDispatchProps = {

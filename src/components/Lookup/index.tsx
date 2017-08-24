@@ -6,9 +6,10 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 
 type TOwnProps = {
   label: string;
-  value?: string;
+  multiple: boolean;
+  values: string[];
   items: { key: string; caption: string; }[];
-  onChange: (selectedItem: string) => void;
+  onChange: (selectedItems: string[]) => void;
 };
 type TStateProps = {
 };
@@ -29,7 +30,9 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
   }
 
   render() {
-    const { items, value, label } = this.props;
+    const { items, values, label } = this.props;
+
+    const selectedItems = values || [];
 
     return (
       <div>
@@ -43,7 +46,7 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
           >
             <ListItemText
               primary={label}
-              secondary={items.filter(r => r.key === value).map(r => r.caption).join()}
+              secondary={items.filter(r => selectedItems.indexOf(r.key) !== -1).map(r => r.caption).join()}
             />
           </ListItem>
         </List>
@@ -56,7 +59,7 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
           {items.map((route) =>
             <MenuItem
               key={route.key}
-              selected={route.key === value}
+              selected={selectedItems.indexOf(route.key) !== -1}
               onClick={() => this.handleMenuItemClick(route.key)}
             >
               {route.caption}
@@ -72,10 +75,32 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
   }
 
   private handleMenuItemClick = (index: string) => {
-    this.setState({ open: false });
-    const { onChange } = this.props;
+    const { onChange, values, multiple } = this.props;
 
-    onChange(index);
+    if (!multiple) {
+      this.setState({ open: false });
+
+      if (!values) {
+        onChange([index]);
+      } else {
+        if (values.indexOf(index) === -1) {
+          onChange([index]);
+        } else {
+          onChange([]);
+        }
+      }
+    } else {
+
+      if (!values) {
+        onChange([index]);
+      } else {
+        if (values.indexOf(index) === -1) {
+          onChange([...values, index]);
+        } else {
+          onChange(values.filter(v => v !== index));
+        }
+      }
+    }
   }
 
   private handleRequestClose = () => {

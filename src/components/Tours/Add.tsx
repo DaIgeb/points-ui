@@ -37,8 +37,8 @@ class AddComponent extends React.Component<TProps> {
   render() {
     const { back, storeAdd, template } = this.props;
 
-    const onPointsChanged = (value: string) => {
-      const item = pointsItems.find(i => i.key === value);
+    const onPointsChanged = (values: string[]) => {
+      const item = pointsItems.find(i => values.indexOf(i.key) !== -1);
       if (item) {
         storeAdd({ points: item.points });
       }
@@ -61,13 +61,15 @@ class AddComponent extends React.Component<TProps> {
           <RoutesLookup value={template.route} onChange={value => storeAdd({ route: value })} />
           <Lookup
             label="Punkte"
-            value={template.points ? template.points.toString() : undefined}
+            multiple={false}
+            values={template.points ? [template.points.toString()] : []}
             items={pointsItems}
             onChange={onPointsChanged}
           />
           <PeopleLookup
-            value={template.participants ? template.participants[0] : undefined}
-            onChange={value => storeAdd({ participants: [value] })}
+            multiple={true}
+            values={template.participants || []}
+            onChange={values => storeAdd({ participants: values })}
           />
         </DialogContent>
         <DialogActions>
