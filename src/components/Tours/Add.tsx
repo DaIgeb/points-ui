@@ -12,7 +12,7 @@ import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
 import { Lookup } from '../Lookup';
-import { Lookup as RoutesLookup } from '../Routes';
+import { LookupEdit as RoutesLookup } from '../Routes';
 import { Lookup as PeopleLookup } from '../People';
 
 const styles = require<{ dialog: string; content: string; add: string; container: string; }>('./Tours.css');

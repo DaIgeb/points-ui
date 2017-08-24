@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as moment from 'moment-timezone';
 
 type TOwnProps = {
-  value: Date | string | number;
+  value?: Date | string | number;
   format?: string;
 };
 
@@ -19,9 +19,11 @@ const defaultTimezone = 'Europe/Zurich';
 export const DateTime = (props: TOwnProps) => {
   const { value, format } = props;
 
-  const date = moment(value);
-  if (date.isValid()) {
-    return <div>{date.tz(defaultTimezone).format(format || formats.dateTimeFormat)}</div>;
+  if (value) {
+    const date = moment(value);
+    if (date.isValid()) {
+      return <div>{date.tz(defaultTimezone).format(format || formats.dateTimeFormat)}</div>;
+    }
   }
 
   return null;

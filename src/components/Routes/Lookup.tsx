@@ -8,8 +8,11 @@ import { Lookup as BaseLookup } from '../Lookup';
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
-type TOwnProps = {
+type TViewOwnProps = {
   value?: string;
+};
+
+type TEditOwnProps = TViewOwnProps & {
   onChange: (selectedItem: string) => void;
 };
 type TStateProps = {
@@ -19,11 +22,12 @@ type TStateProps = {
 type TDispatchProps = {
   reload: () => void;
 };
-type TProps = TStateProps & TDispatchProps & TOwnProps;
+type TViewProps = TStateProps & TDispatchProps & TViewOwnProps;
+type TEditProps = TViewProps & TEditOwnProps;
 
 type TComponentState = { anchorEl: HTMLElement | undefined, open: boolean };
 
-class LookupComponent extends React.Component<TProps, TComponentState> {
+class LookupEditComponent extends React.Component<TEditProps, TComponentState> {
   constructor() {
     super();
 
@@ -35,7 +39,7 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
   componentWillMount() {
     this.initialize(this.props);
   }
-  componentWillReceiveProps(nextProps: Readonly<TProps>) {
+  componentWillReceiveProps(nextProps: Readonly<TEditProps>) {
     this.initialize(nextProps);
   }
 
@@ -55,7 +59,7 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
     );
   }
 
-  private initialize = (props: TProps) => {
+  private initialize = (props: TEditProps) => {
     const { loaded, reload } = props;
     if (!loaded) {
       reload();
@@ -63,14 +67,52 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
   }
 }
 
-const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
+class LookupViewComponent extends React.Component<TViewProps> {
+  componentWillMount() {
+    this.initialize(this.props);
+  }
+  componentWillReceiveProps(nextProps: Readonly<TViewProps>) {
+    this.initialize(nextProps);
+  }
+
+  render() {
+    const { routes, loaded, value } = this.props;
+    if (!loaded) {
+      return <LinearProgress mode="indeterminate" />;
+    }
+
+    if (value) {
+      const route = routes.find(r => r.id === value);
+      if (route) {
+        return <p>{route.name}</p>;
+      }
+
+      return <p>Unbekannt {value}</p>;
+    }
+    return null;
+  }
+
+  private initialize = (props: TViewProps) => {
+    const { loaded, reload } = props;
+    if (!loaded) {
+      reload();
+    }
+  }
+}
+
+const mapStateToProps = (state: TState, ownProps: TEditOwnProps): TStateProps => ({
   routes: fromReducers.getRoutes(state),
   loaded: fromReducers.areRoutesLoaded(state)
 });
-
-export const Lookup = connect<TStateProps, TDispatchProps, TOwnProps>(
+const bindActionCreators: TDispatchProps = {
+  reload: fromActions.routes.reload
+};
+export const LookupEdit = connect<TStateProps, TDispatchProps, TEditOwnProps>(
   mapStateToProps,
-  {
-    reload: fromActions.routes.reload
-  }
-)(LookupComponent);
+  bindActionCreators
+)(LookupEditComponent);
+
+export const LookupView = connect<TStateProps, TDispatchProps, TViewOwnProps>(
+  mapStateToProps,
+  bindActionCreators
+)(LookupViewComponent);

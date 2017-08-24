@@ -10,6 +10,7 @@ import Delete from 'material-ui-icons/Delete';
 
 import { EnhancedTable } from '../EnhancedTable';
 import { DateTime } from '../DateTime';
+import { LookupView } from '../Routes';
 
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
@@ -32,8 +33,6 @@ type TDispatchProps = {
 };
 type TProps = TStateProps & TDispatchProps & TOwnProps;
 
-// const styles = require<{ 'table-header-cell': string, numeric: string }>('./Tours.css');
-
 class ListComponent extends React.Component<TProps> {
   componentWillMount() {
     this.initialize(this.props);
@@ -54,7 +53,12 @@ class ListComponent extends React.Component<TProps> {
           <EnhancedTable
             title="Fahrer"
             columns={[
-              { id: 'route', label: 'Strecke' },
+              {
+                id:
+                'route',
+                label: 'Strecke',
+                render: (row: TTour) => <LookupView value={row.route} />
+              },
               { id: 'points', label: 'Punkte' },
               {
                 id: 'date',
