@@ -57,6 +57,16 @@ class ListComponent extends React.Component<TProps> {
               { id: 'route', label: 'Strecke' },
               { id: 'points', label: 'Punkte' },
               {
+                id: 'date',
+                label: 'Datum',
+                render: (row: TTour) => <DateTime value={row.date} />
+              },
+              {
+                id: 'participants',
+                label: 'Teilnehmer',
+                value: (row: TTour) => row.participants.length.toString()
+              },
+              {
                 id: 'createdAt',
                 label: 'Erstellt am',
                 render: (row: TTour) => <DateTime value={row.createdAt} />
