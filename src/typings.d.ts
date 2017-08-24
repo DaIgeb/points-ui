@@ -57,6 +57,7 @@ type TPoints = 15 | 20 | 40 | 80 | 150;
 type TTour = TTourCreate & TBase;
 type TTourCreate = {
   route: string;
+  date: string;
   points: TPoints;
   participants: string[];
 }

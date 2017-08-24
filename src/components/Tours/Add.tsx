@@ -2,7 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { goBack } from 'react-router-redux';
 
+import * as moment from 'moment';
+
 import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
 
 import * as fromReducers from '../../reducers';
@@ -40,11 +43,21 @@ class AddComponent extends React.Component<TProps> {
         storeAdd({ points: item.points });
       }
     };
+    const onChanged =
+      (handleChange: (value: string) => void): React.ReactEventHandler<HTMLInputElement | HTMLDivElement> =>
+        (event) => {
+          const target = event.target as HTMLInputElement;
+          if (target.nodeName === 'INPUT') {
+            handleChange(target.value);
+          }
+        };
+    const onDateChanged = onChanged(value => storeAdd({ date: moment(value).isValid() ? value : undefined }));
 
     return (
       <Dialog open={true} maxWidth="sm" classes={{ paper: styles.dialog }}>
         <DialogTitle>Strecke hinzufügen</DialogTitle>
         <DialogContent className={styles.content}>
+          <TextField label="Datum" type="date" onChange={onDateChanged} />
           <RoutesLookup value={template.route} onChange={value => storeAdd({ route: value })} />
           <Lookup
             label="Punkte"
@@ -72,9 +85,12 @@ class AddComponent extends React.Component<TProps> {
   }
 
   private save = () => {
-    const { route, points, participants } = this.props.template;
-    if (route && points && participants) {
-      this.props.add({ route, points, participants });
+    const { route, points, participants, date } = this.props.template;
+    if (route && points && participants && date) {
+      const dateValue = moment(date);
+      if (dateValue.isValid()) {
+        this.props.add({ route, points, participants, date: dateValue.toISOString() });
+      }
     }
   }
 }

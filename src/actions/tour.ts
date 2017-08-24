@@ -48,7 +48,7 @@ export const storeAdd = (data: TTourCreate) => ({
   payload: data
 });
 
-export const add = (newPerson: TTourCreate): TDispatchableAction =>
+export const add = (newTour: TTourCreate): TDispatchableAction =>
   (dispatch, getState): (TActions | Promise<TActions> | void) => {
     const idToken = fromReducers.getIdToken(getState());
     if (!idToken) {
@@ -61,7 +61,7 @@ export const add = (newPerson: TTourCreate): TDispatchableAction =>
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({ ...newPerson, participants: newPerson.participants.map(id => ({ id })) })
+      body: JSON.stringify({ ...newTour, participants: newTour.participants.map(id => ({ id })) })
     };
 
     return fetch(process.env.REACT_APP_API_HOST + '/tours', request)
