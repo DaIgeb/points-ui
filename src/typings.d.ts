@@ -19,6 +19,7 @@ type TByCodeState<TItem> = {
 }
 
 type TToursState = {
+  add: TAddState<TTourCreate>;
   all: TAllState;
   byCode: TByCodeState<TTour>;
   info: TInfoState;
@@ -52,11 +53,12 @@ type TAuthState = {
 
 type TRouterState = any;
 
+type TPoints = 15 | 20 | 40 | 80 | 150;
 type TTour = TTourCreate & TBase;
 type TTourCreate = {
   route: string;
-  points: 15 | 20 | 40 | 80 | 150;
-  participants: { id: string; }[];
+  points: TPoints;
+  participants: string[];
 }
 
 type TPerson = TPersonCreate & TBase;
@@ -104,10 +106,10 @@ type TActions = {
     type: 'PERSON_ADD_SUCCESS';
     payload: TPerson;
   } | {
-    type: 'PERSON_ADD_FAILURE' | 'ROUTE_ADD_FAILURE';
+    type: 'PERSON_ADD_FAILURE' | 'ROUTE_ADD_FAILURE' | 'TOUR_ADD_FAILURE';
     payload: any;
   } | {
-    type: 'PERSON_LOAD' | 'PERSON_STORE_ADDING' | 'ROUTES_LOAD' | 'ROUTE_STORE_ADDING' | 'TOURS_LOAD' | 'LOGOUT';
+    type: 'PERSON_LOAD' | 'PERSON_STORE_ADDING' | 'ROUTES_LOAD' | 'ROUTE_STORE_ADDING' | 'TOURS_LOAD' | 'TOUR_STORE_ADDING' | 'LOGOUT';
   } | {
     type: 'PERSON_STORE_ADD';
     payload: TPersonCreate;
@@ -124,6 +126,13 @@ type TActions = {
   | {
     type: 'ROUTE_ADD_SUCCESS';
     payload: TRoute;
+  } | {
+    type: 'TOUR_STORE_ADD';
+    payload: TTourCreate;
+  }
+  | {
+    type: 'TOUR_ADD_SUCCESS';
+    payload: TTour;
   };
 
 declare const process: any;

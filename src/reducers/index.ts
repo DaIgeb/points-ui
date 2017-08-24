@@ -22,6 +22,8 @@ export const getIdToken = (state: TState) => fromAuth.getIdToken(state.auth);
 export const getTours = (state: TState) => fromTours.getAll(state.tours);
 export const isLoadingTours = (state: TState) => fromTours.isLoading(state.tours);
 export const areToursLoaded = (state: TState) => fromTours.areLoaded(state.tours);
+export const addTourTemplate = (state: TState) => fromTours.getAddTemplate(state.tours);
+export const addTourState = (state: TState) => fromTours.getAddState(state.tours);
 
 export const getPeople = (state: TState) => fromPeople.getAll(state.people);
 export const isLoadingPeople = (state: TState) => fromPeople.isLoading(state.people);

@@ -42,3 +42,46 @@ export const reload = (): TDispatchableAction => (dispatch, getState): (TActions
       });
   }
 };
+
+export const storeAdd = (data: TTourCreate) => ({
+  type: 'TOUR_STORE_ADD',
+  payload: data
+});
+
+export const add = (newPerson: TTourCreate): TDispatchableAction =>
+  (dispatch, getState): (TActions | Promise<TActions> | void) => {
+    const idToken = fromReducers.getIdToken(getState());
+    if (!idToken) {
+      return Promise.reject('Not logged in');
+    }
+
+    const request: RequestInit = {
+      headers: {
+        Authorization: 'Bearer ' + idToken,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ ...newPerson, participants: newPerson.participants.map(id => ({ id })) })
+    };
+
+    return fetch(process.env.REACT_APP_API_HOST + '/tours', request)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw Error(response.statusText);
+      })
+      .then((data: TTour) => {
+        const action: TActions = { type: 'TOUR_ADD_SUCCESS', payload: data };
+        dispatch(action);
+
+        return action;
+      })
+      .catch((err) => {
+        const action: TActions = { type: 'TOUR_ADD_FAILURE', payload: err };
+        dispatch(action);
+
+        return action;
+      });
+  };

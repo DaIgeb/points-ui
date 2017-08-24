@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 
 import { LinearProgress } from 'material-ui/Progress';
 
@@ -13,7 +14,7 @@ type TOwnProps = {
   onChange: (selectedItem: string) => void;
 };
 type TStateProps = {
-  routes: TRoute[];
+  people: { key: string; caption: string; }[];
   loaded: boolean;
 };
 type TDispatchProps = {
@@ -40,7 +41,7 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
   }
 
   render() {
-    const { routes, onChange, loaded, value } = this.props;
+    const { people, onChange, loaded, value } = this.props;
     if (!loaded) {
       return <LinearProgress mode="indeterminate" />;
     }
@@ -48,9 +49,9 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
     return (
       <BaseLookup
         value={value}
-        items={routes.map(r => ({ key: r.id, caption: r.name }))}
+        items={people}
         onChange={onChange}
-        label="Strecke"
+        label="Fahrer"
       />
     );
   }
@@ -63,14 +64,21 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
   }
 }
 
+const mapPeopleSelector = createSelector(
+  (args: { people: TPerson[] }) => args.people,
+  people => people
+    .map(r => ({ key: r.id, caption: `${r.lastName} ${r.firstName}` }))
+    .sort((a, b) => a.caption.localeCompare(b.caption))
+);
+
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
-  routes: fromReducers.getRoutes(state),
-  loaded: fromReducers.areRoutesLoaded(state)
+  people: mapPeopleSelector({ people: fromReducers.getPeople(state) }),
+  loaded: fromReducers.arePeopleLoaded(state)
 });
 
 export const Lookup = connect<TStateProps, TDispatchProps, TOwnProps>(
   mapStateToProps,
   {
-    reload: fromActions.routes.reload
+    reload: fromActions.people.reload
   }
 )(LookupComponent);
