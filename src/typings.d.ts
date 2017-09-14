@@ -141,8 +141,3 @@ declare const process: any;
 interface Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
 }
-
-declare module "keycode" {
-  export const keycode: <T>(event: React.SyntheticEvent<T>) => string;
-  export default keycode;
-}

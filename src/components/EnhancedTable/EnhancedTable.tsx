@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import keycode from 'keycode';
+import * as keycode from 'keycode';
 import Checkbox from 'material-ui/Checkbox';
 import {
   TableCell,
@@ -187,7 +187,8 @@ export class EnhancedTable extends React.Component<TProps, TState> {
   }
 
   private handleKeyDown = (event: React.KeyboardEvent<HTMLTableRowElement>, id: string) => {
-    if (keycode(event) === 'space') {
+    // tslint:disable-next-line
+    if (keycode(event as any) === 'space') {
       this.handleClick(id);
     }
   }

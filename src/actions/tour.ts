@@ -61,7 +61,7 @@ export const add = (newTour: TTourCreate): TDispatchableAction =>
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({ ...newTour, participants: newTour.participants.map(id => ({ id })) })
+      body: JSON.stringify(newTour)
     };
 
     return fetch(process.env.REACT_APP_API_HOST + '/tours', request)
