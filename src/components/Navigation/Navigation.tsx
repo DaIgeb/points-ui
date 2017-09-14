@@ -11,7 +11,7 @@ export const Navigation = withRouter<{}>((props: TProps) => (
   <div className={styles.navigation}>
     <div className="menu">
       <NavLink activeClassName={styles.selected} to="/tours">
-        <IconLabel iconName="directions" fixedWith={true} label="Touren" />
+        <IconLabel iconName="event" fixedWith={true} label="Touren" />
       </NavLink>
     </div>
     <div className="menu">
@@ -21,7 +21,7 @@ export const Navigation = withRouter<{}>((props: TProps) => (
     </div>
     <div className="menu">
       <NavLink activeClassName={styles.selected} to="/routes">
-        <IconLabel iconName="group" fixedWith={true} label="Routen" />
+        <IconLabel iconName="directions" fixedWith={true} label="Strecken" />
       </NavLink>
     </div>
   </div>
