@@ -70,7 +70,8 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
     );
   }
 
-  private handleClickListItem = (event: React.MouseEvent<HTMLLIElement>) => {
+  // tslint:disable-next-line
+  private handleClickListItem = (event: React.MouseEvent<any>) => {
     this.setState({ open: true, anchorEl: event.currentTarget });
   }
 

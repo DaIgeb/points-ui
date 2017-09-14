@@ -77,7 +77,7 @@ export class EnhancedTable extends React.Component<TProps, TState> {
         case 'datetime':
           const dateAndTime = date(value);
           if (dateAndTime) {
-            return <DateTime value={dateAndTime}/>;
+            return <DateTime value={dateAndTime} />;
           }
 
           return '';
@@ -149,7 +149,7 @@ export class EnhancedTable extends React.Component<TProps, TState> {
     }
   }
 
-  private handleRequestSort = (event: React.MouseEvent<HTMLButtonElement>, property: types.TColumn): void => {
+  private handleRequestSort = (property: types.TColumn): void => {
     const orderBy = property;
     let order: types.TSortOrder = 'desc';
 

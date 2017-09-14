@@ -30,6 +30,7 @@ export class IconMenu extends React.Component<TProps, TState> {
 
   render() {
     const { label, iconNode, menuItems } = this.props;
+
     return (
       <div>
         <IconButton aria-label={label} onClick={this.handleClick}>
@@ -38,7 +39,7 @@ export class IconMenu extends React.Component<TProps, TState> {
         <Menu
           anchorEl={this.state.anchorEl}
           open={this.state.open}
-          onRequestClose={this.handleRequestClose}
+          onRequestClose={() => this.handleRequestClose()}
         >
           {menuItems.map((item, idx) => (
             <MenuItem key={idx} onClick={() => this.handleRequestClose(item.onClick)}>
@@ -50,12 +51,15 @@ export class IconMenu extends React.Component<TProps, TState> {
     );
   }
 
-  private handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  // tslint:disable-next-line  
+  private handleClick = (event: React.MouseEvent<any>) => {
     this.setState({ open: true, anchorEl: event.currentTarget });
   }
 
-  private handleRequestClose = (onClick: () => void) => {
+  private handleRequestClose = (onClick?: () => void) => {
     this.setState({ open: false });
-    onClick();
+    if (onClick) {
+      onClick();
+    }
   }
 }

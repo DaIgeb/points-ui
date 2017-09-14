@@ -11,15 +11,15 @@ import * as types from './types';
 
 type TProps = {
   columns: types.TColumn[];
-  onRequestSort: (event: React.MouseEvent<HTMLButtonElement>, column: types.TColumn) => void;
+  onRequestSort: (column: types.TColumn) => void;
   onSelectAllClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   order: types.TSortOrder;
   orderBy: types.TColumn | undefined;
 };
 
 export class EnhancedTableHead extends React.Component<TProps> {
-  createSortHandler = (column: types.TColumn) => (event: React.MouseEvent<HTMLButtonElement>) => {
-    this.props.onRequestSort(event, column);
+  createSortHandler = (column: types.TColumn) => () => {
+    this.props.onRequestSort(column);
   }
 
   render() {

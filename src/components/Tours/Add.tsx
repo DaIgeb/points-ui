@@ -91,7 +91,7 @@ class AddComponent extends React.Component<TProps> {
     if (route && points && participants && date) {
       const dateValue = moment(date);
       if (dateValue.isValid()) {
-        this.props.add({ route, points, participants, date: dateValue.toISOString() });
+        this.props.add({ route, points, participants, date: dateValue.format('YYYY-MM-DD') });
       }
     }
   }
