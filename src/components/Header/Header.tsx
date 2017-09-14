@@ -10,11 +10,15 @@ const styles = require<TStyle>('./Header.css');
 const logo = require<string>('./logo.svg');
 
 type TStyle = { header: string; };
-type TProps = {
-  profile: Auth0UserProfile | undefined,
+type TStateProps = {
+  profile: Auth0UserProfile | undefined
+};
+type TDispatchProps = {
   login: () => void;
   logout: () => void;
 };
+type TProps = TStateProps & TDispatchProps;
+
 class HeaderComponent extends React.Component<TProps, {}> {
   render() {
     const { profile, login: doLogin, logout: doLogout } = this.props;
@@ -39,8 +43,8 @@ class HeaderComponent extends React.Component<TProps, {}> {
   }
 }
 
-const mapStateToProps = (state: TState) => ({
+const mapStateToProps = (state: TState): TStateProps => ({
   profile: fromReducers.getProfile(state)
 });
 
-export const Header: React.ComponentType<{}> = connect(mapStateToProps, { login, logout })(HeaderComponent);
+export const Header = connect<TStateProps, TDispatchProps, {}>(mapStateToProps, { login, logout })(HeaderComponent);
