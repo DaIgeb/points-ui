@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
+import * as moment from 'moment';
 
 import * as fromAdd from './add';
 import * as fromByCode from './byCode';
@@ -18,8 +19,17 @@ export const areLoaded = (state: TToursState) => fromInfo.areLoaded(state.info);
 export const getAddTemplate = (state: TToursState) => fromAdd.getAddTemplate(state.add);
 export const getAddState = (state: TToursState) => fromAdd.getAddState(state.add);
 
+type TYearSelection = {
+  state: TToursState;
+  year: number;
+};
+export const forYear = (state: TToursState, year: number) => createSelector(
+  (args: TYearSelection) => getAll(args.state),
+  (args: TYearSelection) => args.year,
+  (all: TTour[], selectedYear: number) => all.filter(t => moment(t.date).year() === selectedYear)
+)({ state, year });
 export const getAll = (state: TToursState) => createSelector(
   (tourState: TToursState) => fromAll.getIds(tourState.all),
   (tourState: TToursState) => fromByCode.byId(tourState.byCode),
-  (ids: string[], byId: {[id: string]: TTour}) => ids.map(id => byId[id])
+  (ids: string[], byId: { [id: string]: TTour }) => ids.map(id => byId[id])
 )(state);

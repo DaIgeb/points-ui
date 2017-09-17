@@ -20,6 +20,7 @@ export const getProfile = (state: TState) => fromAuth.getProfile(state.auth);
 export const getIdToken = (state: TState) => fromAuth.getIdToken(state.auth);
 
 export const getTours = (state: TState) => fromTours.getAll(state.tours);
+export const getToursForYear = (state: TState, year: number) => fromTours.forYear(state.tours, year);
 export const isLoadingTours = (state: TState) => fromTours.isLoading(state.tours);
 export const areToursLoaded = (state: TState) => fromTours.areLoaded(state.tours);
 export const addTourTemplate = (state: TState) => fromTours.getAddTemplate(state.tours);
