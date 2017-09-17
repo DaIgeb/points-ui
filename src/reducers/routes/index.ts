@@ -18,6 +18,8 @@ export const areLoaded = (state: TRoutesStates) => fromInfo.areLoaded(state.info
 export const getAddTemplate = (state: TRoutesStates) => fromAdd.getAddTemplate(state.add);
 export const getAddState = (state: TRoutesStates) => fromAdd.getAddState(state.add);
 
+export const get = (state: TRoutesStates, routeId: string): TRoute | undefined =>
+  fromByCode.byId(state.byCode)[routeId];
 export const getAll = (state: TRoutesStates) => createSelector(
   (routesState: TRoutesStates) => fromAll.getIds(routesState.all),
   (routesState: TRoutesStates) => fromByCode.byId(routesState.byCode),

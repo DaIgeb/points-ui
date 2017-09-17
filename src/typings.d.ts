@@ -141,3 +141,13 @@ declare const process: any;
 interface Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
 }
+
+declare module 'autosuggest-highlight/match' {
+  const match: (text: string, query: string) => number[][];
+  export = match;
+}
+
+declare module 'autosuggest-highlight/parse' {
+  const parse: (text: string, matches: number[][]) => { text: string; highlight: boolean }[];
+  export = parse;
+}

@@ -13,7 +13,7 @@ import * as fromActions from '../../actions';
 
 import { Lookup } from '../Lookup';
 import { LookupEdit as RoutesLookup } from '../Routes';
-import { Lookup as PeopleLookup } from '../People';
+import { AutoCompletePerson } from '../People';
 
 const styles = require<{ dialog: string; content: string; add: string; container: string; }>('./Tours.css');
 
@@ -66,7 +66,7 @@ class AddComponent extends React.Component<TProps> {
             items={pointsItems}
             onChange={onPointsChanged}
           />
-          <PeopleLookup
+          <AutoCompletePerson
             multiple={true}
             values={template.participants || []}
             onChange={values => storeAdd({ participants: values })}

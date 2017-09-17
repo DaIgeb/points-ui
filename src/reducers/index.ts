@@ -26,12 +26,14 @@ export const addTourTemplate = (state: TState) => fromTours.getAddTemplate(state
 export const addTourState = (state: TState) => fromTours.getAddState(state.tours);
 
 export const getPeople = (state: TState) => fromPeople.getAll(state.people);
+export const getPerson = (state: TState, id: string) => fromPeople.get(state.people, id);
 export const isLoadingPeople = (state: TState) => fromPeople.isLoading(state.people);
 export const arePeopleLoaded = (state: TState) => fromPeople.areLoaded(state.people);
 export const addPersonTemplate = (state: TState) => fromPeople.getAddTemplate(state.people);
 export const addPersonState = (state: TState) => fromPeople.getAddState(state.people);
 
 export const getRoutes = (state: TState) => fromRoutes.getAll(state.routes);
+export const getRoute = (state: TState, routeId: string) => fromRoutes.get(state.routes, routeId);
 export const isLoadingRoutes = (state: TState) => fromRoutes.isLoading(state.routes);
 export const areRoutesLoaded = (state: TState) => fromRoutes.areLoaded(state.routes);
 export const addRouteTemplate = (state: TState) => fromRoutes.getAddTemplate(state.routes);

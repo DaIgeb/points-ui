@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import { LinearProgress } from 'material-ui/Progress';
 
-import { Lookup as BaseLookup } from '../Lookup';
+import { AutoComplete } from '../AutoComplete';
 
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
@@ -17,6 +17,7 @@ type TEditOwnProps = TViewOwnProps & {
   onChange: (selectedItem: string | undefined) => void;
 };
 type TStateProps = {
+  route: TRoute | undefined;
   routes: { key: string; caption: string; }[];
   loaded: boolean;
 };
@@ -26,17 +27,7 @@ type TDispatchProps = {
 type TViewProps = TStateProps & TDispatchProps & TViewOwnProps;
 type TEditProps = TViewProps & TEditOwnProps;
 
-type TComponentState = { anchorEl: HTMLElement | undefined, open: boolean };
-
-class LookupEditComponent extends React.Component<TEditProps, TComponentState> {
-  constructor() {
-    super();
-
-    this.state = {
-      anchorEl: undefined,
-      open: false
-    };
-  }
+class AutoCompleteComponent extends React.Component<TEditProps> {
   componentWillMount() {
     this.initialize(this.props);
   }
@@ -45,28 +36,37 @@ class LookupEditComponent extends React.Component<TEditProps, TComponentState> {
   }
 
   render() {
-    const { routes, loaded, value } = this.props;
-    if (!loaded) {
-      return <LinearProgress mode="indeterminate" />;
-    }
+    const { onChange, route } = this.props;
+
+    const value = route ? { caption: route.name, key: route.id } : undefined;
 
     return (
-      <BaseLookup
-        values={value ? [value] : []}
-        multiple={false}
-        items={routes}
-        onChange={this.onRouteChanged}
-        label="Strecke"
+      <AutoComplete
+        label="Start typing the route name"
+        getItems={this.getSuggestions}
+        value={value}
+        onChange={onChange}
       />
     );
   }
 
-  private onRouteChanged = (values: string[]) => {
-    if (values.length > 0) {
-      const { onChange } = this.props;
+  private getSuggestions = (value: string) => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+    let count = 0;
 
-      onChange(values[0]);
-    }
+    return inputLength === 0
+      ? []
+      : this.props.routes.filter(route => {
+        const keep =
+          count < 5 && route.caption.toLowerCase().slice(0, inputLength) === inputValue;
+
+        if (keep) {
+          count += 1;
+        }
+
+        return keep;
+      });
   }
 
   private initialize = (props: TEditProps) => {
@@ -119,15 +119,17 @@ const mapRoutesSelector = createSelector(
 
 const mapStateToProps = (state: TState, ownProps: TEditOwnProps): TStateProps => ({
   routes: mapRoutesSelector({ routes: fromReducers.getRoutes(state) }),
+  route: ownProps.value ? fromReducers.getRoute(state, ownProps.value) : undefined,
   loaded: fromReducers.areRoutesLoaded(state)
 });
 const bindActionCreators: TDispatchProps = {
   reload: fromActions.routes.reload
 };
+
 export const LookupEdit = connect<TStateProps, TDispatchProps, TEditOwnProps>(
   mapStateToProps,
   bindActionCreators
-)(LookupEditComponent);
+)(AutoCompleteComponent);
 
 export const LookupView = connect<TStateProps, TDispatchProps, TViewOwnProps>(
   mapStateToProps,
