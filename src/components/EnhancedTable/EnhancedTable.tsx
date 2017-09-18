@@ -169,10 +169,10 @@ export class EnhancedTable extends React.Component<TProps, TState> {
       }
 
       if (order === 'desc') {
-        return bValue > aValue ? -1 : 1;
+        return bValue && aValue && bValue > aValue ? -1 : 1;
       }
 
-      return aValue > bValue ? -1 : 1;
+      return !bValue || !aValue || aValue > bValue ? -1 : 1;
     });
 
     this.setState({ data, order, orderBy });

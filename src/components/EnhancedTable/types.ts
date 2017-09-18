@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export type TRow = {
   id: string;
-  [index: string]: object | number | string;
+  [index: string]: object | number | string | undefined;
 };
 
 export type TColumn = {

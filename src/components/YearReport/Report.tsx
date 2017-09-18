@@ -2,16 +2,17 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { LinearProgress } from 'material-ui/Progress';
+
 import * as fromReducers from '../../reducers';
+import * as fromActions from '../../actions';
 
 import { EnhancedTable } from '../EnhancedTable';
-
-import { LookupView } from '../People';
 
 type TEnhancedTour = TTour & { routeObj: TRoute | undefined };
 type TGroupedTours = {
   id: string;
-  participant: string;
+  participant: TPerson | undefined;
   totalPoints: number;
   distance: number;
   elevation: number;
@@ -21,24 +22,51 @@ type TGroupedTours = {
 type TStateProps = {
   tours: TTour[];
   groupedTours: TGroupedTours[];
+  toursLoaded: boolean;
+  peopleLoaded: boolean;
+  routesLoaded: boolean;
 };
-type TDispatchProps = {};
-type TOwnProps = {};
+type TDispatchProps = {
+  loadTours: () => void;
+  loadPeople: () => void;
+  loadRoutes: () => void;
+};
+type TOwnProps = {
+  year: number;
+};
 type TProps = TStateProps & TDispatchProps & TOwnProps;
 
+const bindActionCreators: TDispatchProps = {
+  loadTours: fromActions.tours.reload,
+  loadPeople: fromActions.people.reload,
+  loadRoutes: fromActions.routes.reload
+};
+
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => {
-  const tours = fromReducers
-    .getToursForYear(state, 2017)
-    .map(t => ({ ...t, routeObj: fromReducers.getRoute(state, t.route) }));
+  const mappedTours = mapRoutesSelector({
+    tours: fromReducers.getToursForYear(state, ownProps.year),
+    routes: fromReducers.getRoutes(state)
+  });
+
   return ({
-    tours,
-    groupedTours: mapToursSelector(tours)
+    tours: mappedTours,
+    groupedTours: mapToursSelector({ tours: mappedTours, people: fromReducers.getPeople(state) }),
+    toursLoaded: fromReducers.areToursLoaded(state),
+    peopleLoaded: fromReducers.arePeopleLoaded(state),
+    routesLoaded: fromReducers.areRoutesLoaded(state)
   });
 };
 
+const mapRoutesSelector = createSelector(
+  (args: { tours: TTour[]; routes: TRoute[]; }) => args.tours,
+  (args: { tours: TTour[]; routes: TRoute[]; }) => args.routes,
+  (tours: TTour[], routes: TRoute[]) => tours.map(t => ({ ...t, routeObj: routes.find(r => r.id === t.route) }))
+);
+
 const mapToursSelector = createSelector(
-  (args: TEnhancedTour[]) => args,
-  (tours: TEnhancedTour[]) => {
+  (args: { tours: TEnhancedTour[]; people: TPerson[]; }) => args.tours,
+  (args: { tours: TEnhancedTour[]; people: TPerson[]; }) => args.people,
+  (tours: TEnhancedTour[], people: TPerson[]) => {
     const toursByPerson = tours.reduce<{ [participant: string]: TEnhancedTour[] }>(
       (prev, cur) => ({
         ...prev,
@@ -59,7 +87,7 @@ const mapToursSelector = createSelector(
         ...prev,
         {
           id: p,
-          participant: p,
+          participant: people.find(person => person.id === p),
           tours: toursByPerson[p],
           tourCount: toursByPerson[p].length,
           elevation: toursByPerson[p].reduce((sum, cur) => sum + (cur.routeObj ? cur.routeObj.elevation : 0), 0),
@@ -75,27 +103,65 @@ const mapToursSelector = createSelector(
   }
 );
 
-export const Report = connect(mapStateToProps)((props: TProps) => (
-  <div>
-    <p>Total Tour count: {props.tours.length}</p>
-    <EnhancedTable
-      title="Punkte"
-      columns={[
-        { id: 'name', label: 'Name', render: (row: TGroupedTours) => <LookupView values={[row.participant]} /> },
-        { id: 'totalPoints', label: 'Punkte', type: 'number' },
-        { id: 'tourCount', label: 'Anzahl Touren', type: 'number' },
-        { id: 'distance', label: 'Distanz', type: 'number' },
-        { id: 'elevation', label: 'Höhenmeter', type: 'number' },
-        {
-          id: 'tours',
-          label: 'Touren',
-          type: 'string',
-          value: (row: TGroupedTours) => row.tours.map(t => t.routeObj ? t.routeObj.name : t.route).join()
-        }
-      ]}
-      renderToolbarActions={() => <div />}
-      data={props.groupedTours}
-    />
-  </div>
-)
-);
+class ReportComponent extends React.Component<TProps> {
+  componentWillMount() {
+    this.initialize(this.props);
+  }
+
+  componentWillReceiveProps(nextProps: TProps) {
+    this.initialize(nextProps);
+  }
+
+  render() {
+    const { tours, groupedTours, peopleLoaded, toursLoaded, routesLoaded } = this.props;
+
+    if (!peopleLoaded || !toursLoaded || !routesLoaded) {
+      return <LinearProgress mode="indeterminate" />;
+    }
+
+    return (
+      <div>
+        <p>Total Tour count: {tours.length}</p>
+        <EnhancedTable
+          title="Punkte"
+          columns={[
+            {
+              id: 'name',
+              label: 'Name',
+              value: (row: TGroupedTours) =>
+                row.participant ? `${row.participant.lastName} ${row.participant.firstName}` : row.id
+            },
+            { id: 'totalPoints', label: 'Punkte', type: 'number' },
+            { id: 'tourCount', label: 'Anzahl Touren', type: 'number' },
+            { id: 'distance', label: 'Distanz', type: 'number' },
+            { id: 'elevation', label: 'Höhenmeter', type: 'number' },
+            {
+              id: 'tours',
+              label: 'Touren',
+              type: 'string',
+              value: (row: TGroupedTours) => row.tours.map(t => t.routeObj ? t.routeObj.name : t.route).join()
+            }
+          ]}
+          renderToolbarActions={() => <div />}
+          data={groupedTours}
+        />
+      </div>
+    );
+  }
+
+  private initialize = (props: TProps) => {
+    const { loadPeople, peopleLoaded, loadTours, toursLoaded, loadRoutes, routesLoaded } = props;
+
+    if (!peopleLoaded) {
+      loadPeople();
+    }
+    if (!toursLoaded) {
+      loadTours();
+    }
+    if (!routesLoaded) {
+      loadRoutes();
+    }
+  }
+}
+
+export const Report = connect(mapStateToProps, bindActionCreators)(ReportComponent);
