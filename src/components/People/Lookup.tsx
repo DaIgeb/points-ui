@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { LinearProgress } from 'material-ui/Progress';
-
+// import IconButton from 'material-ui/IconButton';
+import Button from 'material-ui/Button';
+import DeleteIcon from 'material-ui-icons/Delete';
 import { AutoComplete } from '../AutoComplete';
 import { Lookup as BaseLookup } from '../Lookup';
 
@@ -140,7 +142,18 @@ class AutoCompleteComponent extends React.Component<TProps> {
               />);
             }
 
-            return <p key={idx}>{currentValue ? `${currentValue.caption} (${currentValue.key})` : 'undefined'}</p>;
+            return (
+              <Button
+                key={idx}
+                onClick={() => {
+                  newValues.splice(idx, 1);
+                  onChange(newValues);
+                }}
+              >
+                <p >{currentValue ? `${currentValue.caption} (${currentValue.key})` : 'undefined'}</p>
+                <DeleteIcon />
+              </Button>
+            );
           })}
           <p onClick={() => onChange([...newValues, ''])}>Add</p>
         </div>
@@ -168,7 +181,9 @@ class AutoCompleteComponent extends React.Component<TProps> {
       ? []
       : this.props.people.filter(person => {
         const keep =
-          count < 5 && person.caption.toLowerCase().slice(0, inputLength) === inputValue;
+          count < 5 &&
+          !this.props.selectedPeople.find(p => p !== undefined && p.id === person.key) &&
+          person.caption.toLowerCase().slice(0, inputLength) === inputValue;
 
         if (keep) {
           count += 1;

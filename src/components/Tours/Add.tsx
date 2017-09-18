@@ -68,7 +68,7 @@ class AddComponent extends React.Component<TProps> {
           />
           <AutoCompletePerson
             multiple={true}
-            values={template.participants || []}
+            values={template.participants || ['']}
             onChange={values => storeAdd({ participants: values })}
           />
         </DialogContent>
