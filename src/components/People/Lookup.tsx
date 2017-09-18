@@ -10,20 +10,26 @@ import { Lookup as BaseLookup } from '../Lookup';
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
-type TOwnProps = {
+type TViewOwnProps = {
   values: string[];
   multiple?: boolean;
+};
+
+type TOwnProps = TViewOwnProps & {
   onChange: (selectedItems: string[]) => void;
 };
-type TStateProps = {
+type TStateViewProps = {
   selectedPeople: (TPerson | undefined)[];
-  people: { key: string; caption: string; }[];
   loaded: boolean;
+};
+type TStateProps = TStateViewProps & {
+  people: { key: string; caption: string; }[];
 };
 type TDispatchProps = {
   reload: () => void;
 };
 type TProps = TStateProps & TDispatchProps & TOwnProps;
+type TViewProps = TStateViewProps & TDispatchProps & TViewOwnProps;
 
 type TComponentState = { anchorEl: HTMLElement | undefined, open: boolean };
 
@@ -61,6 +67,39 @@ class LookupComponent extends React.Component<TProps, TComponentState> {
   }
 
   private initialize = (props: TProps) => {
+    const { loaded, reload } = props;
+    if (!loaded) {
+      reload();
+    }
+  }
+}
+
+class LookupViewComponent extends React.Component<TViewProps> {
+  componentWillMount() {
+    this.initialize(this.props);
+  }
+  componentWillReceiveProps(nextProps: Readonly<TViewProps>) {
+    this.initialize(nextProps);
+  }
+
+  render() {
+    const { loaded, multiple, selectedPeople } = this.props;
+    if (!loaded) {
+      return <LinearProgress mode="indeterminate" />;
+    }
+
+    if (!multiple) {
+      return <span>{getCaption(selectedPeople[0])}</span>;
+    }
+
+    return (
+      <div>
+        {selectedPeople.map((p, idx) => <span key={p ? p.id : idx}>{getCaption(p)}</span>)}
+      </div>
+    );
+  }
+
+  private initialize = (props: TViewProps) => {
     const { loaded, reload } = props;
     if (!loaded) {
       reload();
@@ -145,7 +184,7 @@ class AutoCompleteComponent extends React.Component<TProps> {
   }
 }
 
-const getCaption = (person: TPerson) => `${person.lastName} ${person.firstName}`;
+const getCaption = (person: TPerson | undefined) => person ? `${person.lastName} ${person.firstName}` : 'Not loaded';
 
 const mapPeopleSelector = createSelector(
   (args: { people: TPerson[] }) => args.people,
@@ -154,7 +193,7 @@ const mapPeopleSelector = createSelector(
     .sort((a, b) => a.caption.localeCompare(b.caption))
 );
 
-const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
+const mapStateToProps = (state: TState, ownProps: TViewOwnProps): TStateProps => ({
   people: mapPeopleSelector({ people: fromReducers.getPeople(state) }),
   selectedPeople: ownProps.values.map(v => fromReducers.getPerson(state, v)),
   loaded: fromReducers.arePeopleLoaded(state)
@@ -173,3 +212,14 @@ export const Lookup = connect<TStateProps, TDispatchProps, TOwnProps>(
     reload: fromActions.people.reload
   }
 )(LookupComponent);
+
+const mapStateToViewProps = (state: TState, ownProps: TViewOwnProps): TStateViewProps => ({
+  selectedPeople: ownProps.values.map(v => fromReducers.getPerson(state, v)),
+  loaded: fromReducers.arePeopleLoaded(state)
+});
+export const LookupView = connect<TStateViewProps, TDispatchProps, TViewOwnProps>(
+  mapStateToViewProps,
+  {
+    reload: fromActions.people.reload
+  }
+)(LookupViewComponent);

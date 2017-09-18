@@ -7,7 +7,7 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 import { history } from './history';
 import { CoreLayout } from './layouts/CoreLayout';
-import { Header, Navigation, Tours, People, Routes, PrivateRoute } from './components';
+import { Header, Navigation, Tours, People, Routes, PrivateRoute, YearReport } from './components';
 import { Callback } from './auth/Callback';
 import configureStore from './store/configureStore';
 
@@ -36,6 +36,7 @@ class AppComponent extends React.Component<RouteComponentProps<void>, {}> {
           <PrivateRoute path="/routes" component={Routes} />
           <PrivateRoute path="/members" component={People} />
           <PrivateRoute path="/tours" component={Tours} />
+          <PrivateRoute path="/reports" component={YearReport} />
           <PrivateRoute
             path="/callback"
             render={(props) => {

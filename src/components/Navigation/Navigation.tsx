@@ -24,5 +24,10 @@ export const Navigation = withRouter<{}>((props: TProps) => (
         <IconLabel iconName="directions" fixedWith={true} label="Strecken" />
       </NavLink>
     </div>
+    <div className="menu">
+    <NavLink activeClassName={styles.selected} to="/reports">
+      <IconLabel iconName="show_chart" fixedWith={true} label="Reports" />
+    </NavLink>
+  </div>
   </div>
 ));
