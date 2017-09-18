@@ -91,7 +91,12 @@ class AddComponent extends React.Component<TProps> {
     if (route && points && participants && date) {
       const dateValue = moment(date);
       if (dateValue.isValid()) {
-        this.props.add({ route, points, participants, date: dateValue.format('YYYY-MM-DD') });
+        this.props.add({
+          route,
+          points,
+          participants: participants.filter(p => p && p.length > 5),
+          date: dateValue.format('YYYY-MM-DD')
+        });
       }
     }
   }

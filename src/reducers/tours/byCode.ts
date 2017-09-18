@@ -10,6 +10,12 @@ const byIdReducer = (state: { [id: string]: TTour } = {}, action: TActions) => {
         }),
         {}
       );
+    case 'TOUR_ADD_SUCCESS': {
+      return {
+        ...state,
+        [action.payload.id]: action.payload
+      };
+    }
     default:
       return state;
   }
