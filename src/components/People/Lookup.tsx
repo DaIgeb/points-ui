@@ -100,7 +100,7 @@ class AutoCompleteComponent extends React.Component<TProps> {
               />);
             }
 
-            return <p>{currentValue ? currentValue.caption : 'undefined'}</p>;
+            return <p key={idx}>{currentValue ? currentValue.caption : 'undefined'}</p>;
           })}
           <p onClick={() => onChange([...newValues, ''])}>Add</p>
         </div>

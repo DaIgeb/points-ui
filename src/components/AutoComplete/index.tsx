@@ -6,9 +6,7 @@ import Paper, { PaperProps } from 'material-ui/Paper/Paper';
 import { MenuItem } from 'material-ui/Menu';
 import * as match from 'autosuggest-highlight/match';
 import * as parse from 'autosuggest-highlight/parse';
-import { withStyles } from 'material-ui/styles';
-import { StyleRulesCallback } from 'material-ui/styles/withStyles';
-import { Theme } from 'material-ui/styles/theme';
+import { withStyles, Theme, StyleRulesCallback } from 'material-ui/styles';
 
 type TClasses = {
   container: React.CSSProperties;

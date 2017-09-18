@@ -3,8 +3,7 @@ import { Provider, connect } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { Switch, RouteComponentProps, withRouter } from 'react-router-dom';
 
-import createMuiTheme from 'material-ui/styles/theme';
-import { MuiThemeProvider } from 'material-ui/styles';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 import { history } from './history';
 import { CoreLayout } from './layouts/CoreLayout';
