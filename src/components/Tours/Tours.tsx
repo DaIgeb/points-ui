@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Switch } from 'react-router-dom';
 
 import { PrivateRoute } from '../PrivateRoute';
 
@@ -9,12 +9,14 @@ import { List } from './List';
 
 export const Tours = () => (
   <div>
-    <PrivateRoute path="/tours/add" component={Add} exact={true} />
-    <PrivateRoute
-      path="/tours/:id"
-      render={(props: RouteComponentProps<{ id: string }>) => <Edit id={props.match.params.id} />}
-      exact={true}
-    />
+    <Switch>
+      <PrivateRoute path="/tours/add" component={Add} exact={true} />
+      <PrivateRoute
+        path="/tours/:id"
+        render={(props: RouteComponentProps<{ id: string }>) => <Edit id={props.match.params.id} />}
+        exact={true}
+      />
+    </Switch>
     <PrivateRoute path="/tours" component={List} exact={false} />
   </div>
 );

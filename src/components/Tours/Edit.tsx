@@ -20,6 +20,8 @@ type TOwnProps = {
 };
 type TStateProps = {
   template: TTour | undefined;
+  baseTour: TTour | undefined;
+  patchedTour: Partial<TTourCreate>;
   state: TEditStates;
 };
 type TDispatchProps = {
@@ -31,7 +33,7 @@ type TProps = TStateProps & TDispatchProps & TOwnProps;
 
 class EditComponent extends React.Component<TProps> {
   render() {
-    const { back, store, template, id } = this.props;
+    const { back, store, template, id, patchedTour } = this.props;
 
     return (
       <Dialog open={true} maxWidth="sm" classes={{ paper: styles.dialog }}>
@@ -41,15 +43,21 @@ class EditComponent extends React.Component<TProps> {
           {!template && <LinearProgress mode="indeterminate" />}
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={() => this.save()}>Save</Button>
-          <Button onClick={() => back()}>Cancel</Button>
+          <Button
+            color="primary"
+            onClick={() => this.save()}
+            disabled={Object.keys(patchedTour).length === 0}
+          >
+            Save
+          </Button>
+          <Button onClick={() => back()}>Close</Button>
         </DialogActions>
       </Dialog>
     );
   }
 
   componentWillReceiveProps(nextProps: TProps) {
-    if (Object.keys(nextProps.template).length === 0 && Object.keys(this.props.template).length > 0) {
+    if (nextProps.state === 'success' && this.props.state !== nextProps.state) {
       this.props.back();
     }
   }
@@ -82,6 +90,8 @@ const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => {
       ...baseTour,
       ...patchedTour
     } : undefined,
+    baseTour,
+    patchedTour,
     state: fromReducers.editTourState(state)
   });
 };
