@@ -202,6 +202,8 @@ export class EnhancedTable extends React.Component<TProps, TState> {
       if (showDetails) {
         showDetails(id);
       }
+    } else {
+      this.doHandleClick(id);
     }
   }
   private doHandleClick = (id: string) => {
