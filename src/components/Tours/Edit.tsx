@@ -35,7 +35,7 @@ class EditComponent extends React.Component<TProps> {
 
     return (
       <Dialog open={true} maxWidth="sm" classes={{ paper: styles.dialog }}>
-        <DialogTitle>Strecke hinzufügen</DialogTitle>
+        <DialogTitle>Tour editieren</DialogTitle>
         <DialogContent className={styles.content}>
           {template && <Fields data={template} onChange={patch => store(id, patch)} />}
           {!template && <LinearProgress mode="indeterminate" />}

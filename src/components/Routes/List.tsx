@@ -52,7 +52,7 @@ class ListComponent extends React.Component<TProps> {
       <div className={styles.container}>
         <div className={styles.content}>
           <EnhancedTable
-            title="Fahrer"
+            title="Strecken"
             columns={[
               { id: 'name', label: 'Name' },
               { id: 'distance', label: 'Distanz', type: 'number' },

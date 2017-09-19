@@ -6,6 +6,7 @@ import List, { ListItem } from 'material-ui/List';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
 
 import { DateTime } from '../DateTime';
+import { getCaption } from '../People';
 
 import { TGroupedTours, TEnhancedTour } from './types';
 
@@ -17,10 +18,7 @@ export class PersonDetails extends React.Component<{ data: TGroupedTours | undef
         <DialogTitle>Fahrer Details</DialogTitle>
         <DialogContent>
           {!data && <div>Nothing found</div>}
-          {data && <div>
-            {data.participant ? data.participant.firstName : 'Unknown participant'}
-            <TourTable tours={data.tours} />
-          </div>}
+          {data && <div>{getCaption(data.participant)} <TourTable tours={data.tours} /></div>}
         </DialogContent>
         <DialogActions>
           <Button onClick={close}>Cancel</Button>

@@ -32,7 +32,7 @@ class AddComponent extends React.Component<TProps> {
 
     return (
       <Dialog open={true} maxWidth="sm" classes={{ paper: styles.dialog }}>
-        <DialogTitle>Strecke hinzufügen</DialogTitle>
+        <DialogTitle>Tour hinzufügen</DialogTitle>
         <DialogContent className={styles.content}>
           <Fields data={template} onChange={storeAdd} />
         </DialogContent>

@@ -12,6 +12,8 @@ import { Lookup as BaseLookup } from '../Lookup';
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
+import { getCaption } from './utils';
+
 type TViewOwnProps = {
   values: string[];
   multiple?: boolean;
@@ -191,8 +193,6 @@ class AutoCompleteComponent extends React.Component<TProps> {
     }
   }
 }
-
-const getCaption = (person: TPerson | undefined) => person ? `${person.lastName} ${person.firstName}` : 'Not loaded';
 
 const mapPeopleSelector = createSelector(
   (args: { people: TPerson[] }) => args.people,

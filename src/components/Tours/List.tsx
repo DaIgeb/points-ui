@@ -51,7 +51,7 @@ class ListComponent extends React.Component<TProps> {
       <div className={styles.container}>
         <div className={styles.content}>
           <EnhancedTable
-            title="Fahrer"
+            title="Touren"
             columns={[
               {
                 id:
@@ -63,7 +63,7 @@ class ListComponent extends React.Component<TProps> {
               {
                 id: 'date',
                 label: 'Datum',
-                render: (row: TTour) => <DateTime value={row.date} />
+                render: (row: TTour) => <DateTime value={row.date} format="L" />
               },
               {
                 id: 'participants',
