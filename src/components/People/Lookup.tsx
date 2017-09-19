@@ -128,20 +128,6 @@ class AutoCompleteComponent extends React.Component<TProps> {
           {selectedPeople.map((p, idx) => {
             const currentValue = p ? { caption: getCaption(p), key: p.id } : undefined;
 
-            if (idx === selectedPeople.length - 1) {
-              return (<AutoComplete
-                label="Start typing the persons last name"
-                key={idx}
-                getItems={this.getSuggestions}
-                value={currentValue}
-                onChange={val => {
-                  newValues[idx] = val;
-                  newValues.push('');
-                  onChange(newValues);
-                }}
-              />);
-            }
-
             return (
               <Button
                 key={idx}
@@ -155,7 +141,13 @@ class AutoCompleteComponent extends React.Component<TProps> {
               </Button>
             );
           })}
-          <p onClick={() => onChange([...newValues, ''])}>Add</p>
+
+          <AutoComplete
+            label="Start typing the persons last name"
+            getItems={this.getSuggestions}
+            value={{ key: selectedPeople.length.toString(), caption: '' }}
+            onChange={val => onChange([...newValues, val])}
+          />
         </div>
       );
     }

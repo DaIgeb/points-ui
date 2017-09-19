@@ -22,6 +22,7 @@ type TToursState = {
   add: TAddState<TTourCreate>;
   all: TAllState;
   byCode: TByCodeState<TTour>;
+  edit: TEditState<TTourCreate>;
   info: TInfoState;
 };
 type TRoutesStates = {
@@ -32,10 +33,15 @@ type TRoutesStates = {
 };
 
 type TAddStates = 'editing' | 'adding' | 'success';
+type TEditStates = 'editing' | 'saving' | 'success';
 
 type TAddState<TCreate> = {
   state: TAddStates;
   template: Partial<TCreate>
+};
+type TEditState<TPatch> = {
+  state: TEditStates;
+  template: Partial<TPatch>;
 };
 
 type TPeopleState = {
@@ -110,7 +116,7 @@ type TActions = {
     type: 'PERSON_ADD_FAILURE' | 'ROUTE_ADD_FAILURE' | 'TOUR_ADD_FAILURE' | 'TOUR_SAVE_FAILURE';
     payload: any;
   } | {
-    type: 'PERSON_LOAD' | 'PERSON_STORE_ADDING' | 'ROUTES_LOAD' | 'ROUTE_STORE_ADDING' | 'TOURS_LOAD' | 'TOUR_STORE_ADDING' | 'LOGOUT';
+    type: 'PERSON_LOAD' | 'PERSON_STORE_ADDING' | 'ROUTES_LOAD' | 'ROUTE_STORE_ADDING' | 'TOURS_LOAD' | 'TOUR_STORE_ADDING' | 'TOUR_STORE_SAVING' | 'LOGOUT';
   } | {
     type: 'PERSON_STORE_ADD';
     payload: TPersonCreate;

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { push, goBack } from 'react-router-redux';
 
 import { LinearProgress } from 'material-ui/Progress';
 
@@ -8,17 +10,10 @@ import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
 
 import { EnhancedTable } from '../EnhancedTable';
+import { PrivateRoute } from '../PrivateRoute';
+import { PersonDetails } from './Detail';
+import { TGroupedTours, TEnhancedTour } from './types';
 
-type TEnhancedTour = TTour & { routeObj: TRoute | undefined };
-type TGroupedTours = {
-  id: string;
-  participant: TPerson | undefined;
-  totalPoints: number;
-  distance: number;
-  elevation: number;
-  tourCount: number;
-  tours: TEnhancedTour[]
-};
 type TStateProps = {
   tours: TTour[];
   groupedTours: TGroupedTours[];
@@ -30,6 +25,8 @@ type TDispatchProps = {
   loadTours: () => void;
   loadPeople: () => void;
   loadRoutes: () => void;
+  back: () => void;
+  navigate: (uri: string) => void;
 };
 type TOwnProps = {
   year: number;
@@ -39,7 +36,9 @@ type TProps = TStateProps & TDispatchProps & TOwnProps;
 const bindActionCreators: TDispatchProps = {
   loadTours: fromActions.tours.reload,
   loadPeople: fromActions.people.reload,
-  loadRoutes: fromActions.routes.reload
+  loadRoutes: fromActions.routes.reload,
+  back: goBack,
+  navigate: push
 };
 
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => {
@@ -103,7 +102,8 @@ const mapToursSelector = createSelector(
   }
 );
 
-class ReportComponent extends React.Component<TProps> {
+// tslint:disable-next-line
+class ReportComponent extends React.Component<TProps & RouteComponentProps<any>> {
   componentWillMount() {
     this.initialize(this.props);
   }
@@ -113,7 +113,7 @@ class ReportComponent extends React.Component<TProps> {
   }
 
   render() {
-    const { tours, groupedTours, peopleLoaded, toursLoaded, routesLoaded } = this.props;
+    const { tours, groupedTours, peopleLoaded, toursLoaded, routesLoaded, navigate, back } = this.props;
 
     if (!peopleLoaded || !toursLoaded || !routesLoaded) {
       return <LinearProgress mode="indeterminate" />;
@@ -144,6 +144,15 @@ class ReportComponent extends React.Component<TProps> {
           ]}
           renderToolbarActions={() => <div />}
           data={groupedTours}
+          showDetails={id => navigate('/reports/' + id)}
+        />
+        <PrivateRoute
+          path="/reports/:id"
+          exact={true}
+          render={(props: RouteComponentProps<{ id: string; }>) => <PersonDetails
+            close={() => back()}
+            data={groupedTours.find(t => t.id === props.match.params.id)}
+          />}
         />
       </div>
     );
@@ -164,4 +173,4 @@ class ReportComponent extends React.Component<TProps> {
   }
 }
 
-export const Report = connect(mapStateToProps, bindActionCreators)(ReportComponent);
+export const Report = withRouter<{ year: number }>(connect(mapStateToProps, bindActionCreators)(ReportComponent));

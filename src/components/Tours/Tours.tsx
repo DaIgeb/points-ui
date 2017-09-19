@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { PrivateRoute } from '../PrivateRoute';
 
@@ -7,7 +7,7 @@ import { Add } from './Add';
 import { Edit } from './Edit';
 import { List } from './List';
 
-export const Tours = withRouter(() => (
+export const Tours = () => (
   <div>
     <PrivateRoute path="/tours/add" component={Add} exact={true} />
     <PrivateRoute
@@ -17,4 +17,4 @@ export const Tours = withRouter(() => (
     />
     <PrivateRoute path="/tours" component={List} exact={false} />
   </div>
-));
+);

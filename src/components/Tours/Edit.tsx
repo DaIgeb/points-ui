@@ -20,7 +20,7 @@ type TOwnProps = {
 };
 type TStateProps = {
   template: TTour | undefined;
-  state: TAddStates;
+  state: TEditStates;
 };
 type TDispatchProps = {
   back: () => void;
@@ -73,10 +73,18 @@ class EditComponent extends React.Component<TProps> {
   }
 }
 
-const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
-  template: fromReducers.getTour(state, ownProps.id),
-  state: fromReducers.addTourState(state)
-});
+const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => {
+  const baseTour = fromReducers.getTour(state, ownProps.id);
+  const patchedTour = fromReducers.editTourTemplate(state);
+
+  return ({
+    template: baseTour ? {
+      ...baseTour,
+      ...patchedTour
+    } : undefined,
+    state: fromReducers.editTourState(state)
+  });
+};
 
 export const Edit = connect<TStateProps, TDispatchProps, TOwnProps>(
   mapStateToProps,
