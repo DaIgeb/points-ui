@@ -18,6 +18,7 @@ export const isLoading = (state: TToursState) => fromInfo.isLoading(state.info);
 export const areLoaded = (state: TToursState) => fromInfo.areLoaded(state.info);
 export const getAddTemplate = (state: TToursState) => fromAdd.getAddTemplate(state.add);
 export const getAddState = (state: TToursState) => fromAdd.getAddState(state.add);
+export const get = (state: TToursState, id: string) => fromByCode.get(state.byCode, id);
 
 type TYearSelection = {
   state: TToursState;

@@ -26,3 +26,4 @@ export const reducer = combineReducers<TByCodeState<TTour>>({
 });
 
 export const byId = (state: TByCodeState<TTour>) => state.byId;
+export const get = (state: TByCodeState<TTour>, id: string): TTour | undefined => state.byId[id];

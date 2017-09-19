@@ -22,6 +22,7 @@ type TProps = {
   columns: types.TColumn[];
   renderToolbarActions: (numSelected: number, getSelection: () => types.TRow[]) => React.ReactNode;
   rowClass?: (row: types.TRow) => string | undefined;
+  showDetails?: (id: string) => void;
 };
 type TState = {
   order: types.TSortOrder;
@@ -103,7 +104,7 @@ export class EnhancedTable extends React.Component<TProps, TState> {
               return (
                 <TableRow
                   hover={true}
-                  onClick={event => this.handleClick(n.id)}
+                  onClick={event => this.handleClick(event, n.id)}
                   onKeyDown={event => this.handleKeyDown(event, n.id)}
                   role="checkbox"
                   tabIndex={-1}
@@ -189,11 +190,21 @@ export class EnhancedTable extends React.Component<TProps, TState> {
   private handleKeyDown = (event: React.KeyboardEvent<HTMLTableRowElement>, id: string) => {
     // tslint:disable-next-line
     if (keycode(event as any) === 'space') {
-      this.handleClick(id);
+      this.doHandleClick(id);
     }
   }
 
-  private handleClick = (id: string) => {
+  private handleClick = (event: React.SyntheticEvent<HTMLTableRowElement>, id: string) => {
+    // tslint:disable-next-line
+    const untypedEvent = event as any;
+    if (untypedEvent.ctrlKey) {
+      const { showDetails } = this.props;
+      if (showDetails) {
+        showDetails(id);
+      }
+    }
+  }
+  private doHandleClick = (id: string) => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected: string[] = [];

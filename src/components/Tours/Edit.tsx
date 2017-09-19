@@ -5,6 +5,7 @@ import { goBack } from 'react-router-redux';
 import * as moment from 'moment';
 
 import Button from 'material-ui/Button';
+import { LinearProgress } from 'material-ui/Progress';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
 
 import * as fromReducers from '../../reducers';
@@ -14,27 +15,30 @@ import { Fields } from './Fields';
 
 const styles = require<{ dialog: string; content: string; add: string; container: string; }>('./Tours.css');
 
-type TOwnProps = {};
+type TOwnProps = {
+  id: string;
+};
 type TStateProps = {
-  template: Partial<TTourCreate>;
+  template: TTour | undefined;
   state: TAddStates;
 };
 type TDispatchProps = {
   back: () => void;
-  storeAdd: (data: Partial<TTourCreate>) => void;
-  add: (data: TTourCreate) => void;
+  store: (id: string, data: Partial<TTourCreate>) => void;
+  save: (id: string, data: TTourCreate) => void;
 };
 type TProps = TStateProps & TDispatchProps & TOwnProps;
 
-class AddComponent extends React.Component<TProps> {
+class EditComponent extends React.Component<TProps> {
   render() {
-    const { back, storeAdd, template } = this.props;
+    const { back, store, template, id } = this.props;
 
     return (
       <Dialog open={true} maxWidth="sm" classes={{ paper: styles.dialog }}>
         <DialogTitle>Strecke hinzufügen</DialogTitle>
         <DialogContent className={styles.content}>
-          <Fields data={template} onChange={storeAdd} />
+          {template && <Fields data={template} onChange={patch => store(id, patch)} />}
+          {!template && <LinearProgress mode="indeterminate" />}
         </DialogContent>
         <DialogActions>
           <Button color="primary" onClick={() => this.save()}>Save</Button>
@@ -51,31 +55,34 @@ class AddComponent extends React.Component<TProps> {
   }
 
   private save = () => {
-    const { route, points, participants, date } = this.props.template;
-    if (route && points && participants && date) {
-      const dateValue = moment(date);
-      if (dateValue.isValid()) {
-        this.props.add({
-          route,
-          points,
-          participants: participants.filter(p => p && p.length > 5),
-          date: dateValue.format('YYYY-MM-DD')
-        });
+    const { template, id } = this.props;
+    if (template) {
+      const { route, points, participants, date } = template;
+      if (route && points && participants && date) {
+        const dateValue = moment(date);
+        if (dateValue.isValid()) {
+          this.props.save(id, {
+            route,
+            points,
+            participants: participants.filter(p => p && p.length > 5),
+            date: dateValue.format('YYYY-MM-DD')
+          });
+        }
       }
     }
   }
 }
 
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
-  template: fromReducers.addTourTemplate(state),
+  template: fromReducers.getTour(state, ownProps.id),
   state: fromReducers.addTourState(state)
 });
 
-export const Add = connect<TStateProps, TDispatchProps, TOwnProps>(
+export const Edit = connect<TStateProps, TDispatchProps, TOwnProps>(
   mapStateToProps,
   {
     back: goBack,
-    storeAdd: fromActions.tours.storeAdd,
-    add: fromActions.tours.add
+    store: fromActions.tours.storeEdit,
+    save: fromActions.tours.save
   }
-)(AddComponent);
+)(EditComponent);

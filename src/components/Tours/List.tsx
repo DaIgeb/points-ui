@@ -94,6 +94,7 @@ class ListComponent extends React.Component<TProps> {
               </IconButton>;
             }}
             data={tours}
+            showDetails={id => navigate(`/tours/${id}`)}
           />
         </div >
       </div >

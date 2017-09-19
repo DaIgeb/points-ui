@@ -107,7 +107,7 @@ type TActions = {
     type: 'PERSON_ADD_SUCCESS';
     payload: TPerson;
   } | {
-    type: 'PERSON_ADD_FAILURE' | 'ROUTE_ADD_FAILURE' | 'TOUR_ADD_FAILURE';
+    type: 'PERSON_ADD_FAILURE' | 'ROUTE_ADD_FAILURE' | 'TOUR_ADD_FAILURE' | 'TOUR_SAVE_FAILURE';
     payload: any;
   } | {
     type: 'PERSON_LOAD' | 'PERSON_STORE_ADDING' | 'ROUTES_LOAD' | 'ROUTE_STORE_ADDING' | 'TOURS_LOAD' | 'TOUR_STORE_ADDING' | 'LOGOUT';
@@ -130,9 +130,17 @@ type TActions = {
   } | {
     type: 'TOUR_STORE_ADD';
     payload: TTourCreate;
-  }
-  | {
+  } | {
+    type: 'TOUR_STORE_EDIT';
+    payload: {
+      id: string;
+      patch: TTourCreate;
+    };
+  } | {
     type: 'TOUR_ADD_SUCCESS';
+    payload: TTour;
+  } | {
+    type: 'TOUR_SAVE_SUCCESS';
     payload: TTour;
   };
 
