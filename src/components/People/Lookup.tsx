@@ -177,7 +177,7 @@ class AutoCompleteComponent extends React.Component<TProps> {
         const keep =
           count < 5 &&
           !this.props.selectedPeople.find(p => p !== undefined && p.id === person.key) &&
-          person.caption.toLowerCase().slice(0, inputLength) === inputValue;
+          person.caption.localeCompare(inputValue) > -1;
 
         if (keep) {
           count += 1;

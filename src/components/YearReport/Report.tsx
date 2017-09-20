@@ -134,13 +134,7 @@ class ReportComponent extends React.Component<TProps & RouteComponentProps<any>>
             { id: 'totalPoints', label: 'Punkte', type: 'number' },
             { id: 'tourCount', label: 'Anzahl Touren', type: 'number' },
             { id: 'distance', label: 'Distanz', type: 'number' },
-            { id: 'elevation', label: 'Höhenmeter', type: 'number' },
-            {
-              id: 'tours',
-              label: 'Touren',
-              type: 'string',
-              value: (row: TGroupedTours) => row.tours.map(t => t.routeObj ? t.routeObj.name : t.route).join()
-            }
+            { id: 'elevation', label: 'Höhenmeter', type: 'number' }
           ]}
           renderToolbarActions={() => <div />}
           data={groupedTours}

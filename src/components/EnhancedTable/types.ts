@@ -12,7 +12,7 @@ export type TColumn = {
   label: string;
   component?: React.ComponentType;
   render?: (data: TRow) => React.ReactNode;
-  value?: (data: TRow) => string;
+  value?: (data: TRow) => any; // tslint:disable-line
 };
 
 export type TSortOrder = 'asc' | 'desc';

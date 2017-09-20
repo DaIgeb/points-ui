@@ -10,7 +10,6 @@ import Delete from 'material-ui-icons/Delete';
 
 import { EnhancedTable } from '../EnhancedTable';
 import { DateTime } from '../DateTime';
-import { LookupView } from '../Routes';
 
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
@@ -25,10 +24,13 @@ const styles = require<{
 type TOwnProps = RouteComponentProps<{}>;
 type TStateProps = {
   tours: TTour[];
+  routes: TRoute[];
+  routesLoaded: boolean;
   loaded: boolean;
 };
 type TDispatchProps = {
   reload: () => void;
+  reloadRoutes: () => void;
   navigate: (uri: string) => void;
 };
 type TProps = TStateProps & TDispatchProps & TOwnProps;
@@ -42,8 +44,8 @@ class ListComponent extends React.Component<TProps> {
   }
 
   render() {
-    const { tours, loaded, navigate } = this.props;
-    if (!loaded) {
+    const { tours, routes, loaded, routesLoaded, navigate } = this.props;
+    if (!loaded || !routesLoaded) {
       return <LinearProgress mode="indeterminate" />;
     }
 
@@ -57,9 +59,12 @@ class ListComponent extends React.Component<TProps> {
                 id:
                 'route',
                 label: 'Strecke',
-                render: (row: TTour) => <LookupView value={row.route} />
+                value: (row: TTour) => {
+                  const route = routes.find(r => r.id === row.route);
+                  return route ? route.name : 'Unknown';
+                }
               },
-              { id: 'points', label: 'Punkte' },
+              { id: 'points', label: 'Punkte', type: 'number' },
               {
                 id: 'date',
                 label: 'Datum',
@@ -68,7 +73,8 @@ class ListComponent extends React.Component<TProps> {
               {
                 id: 'participants',
                 label: 'Teilnehmer',
-                value: (row: TTour) => row.participants.length.toString()
+                type: 'number',
+                value: (row: TTour) => row.participants.length
               },
               {
                 id: 'createdAt',
@@ -102,15 +108,20 @@ class ListComponent extends React.Component<TProps> {
   }
 
   private initialize = (props: TProps) => {
-    const { loaded, reload } = props;
+    const { loaded, reload, routesLoaded, reloadRoutes } = props;
     if (!loaded) {
       reload();
+    }
+    if (!routesLoaded) {
+      reloadRoutes();
     }
   }
 }
 
 const mapStateToProps = (state: TState, ownProps: TOwnProps): TStateProps => ({
   tours: fromReducers.getTours(state),
+  routes: fromReducers.getRoutes(state),
+  routesLoaded: fromReducers.areRoutesLoaded(state),
   loaded: fromReducers.areToursLoaded(state)
 });
 
@@ -118,6 +129,7 @@ export const List = connect<TStateProps, TDispatchProps, TOwnProps>(
   mapStateToProps,
   {
     reload: fromActions.tours.reload,
+    reloadRoutes: fromActions.routes.reload,
     navigate: push
   }
 )(ListComponent);

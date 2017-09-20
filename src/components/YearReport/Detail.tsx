@@ -45,7 +45,7 @@ const TourTable = (props: { tours: TEnhancedTour[] }) => {
     <List>
       {sortedTours.map(t => (
         <ListItem key={t.id}>
-          <DateTime value={t.date} format="L" />{t.routeObj ? t.routeObj.name : 'Unknown'}
+          <DateTime value={t.date} format="L" /> - {t.points} - {t.routeObj ? t.routeObj.name : 'Unknown'}
         </ListItem>)
       )}
     </List>

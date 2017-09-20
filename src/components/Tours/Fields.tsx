@@ -51,7 +51,7 @@ export class Fields extends React.Component<TProps> {
         />
         <AutoCompletePerson
           multiple={true}
-          values={data.participants || ['']}
+          values={data.participants || []}
           onChange={values => onChange({ participants: values })}
         />
       </div>
