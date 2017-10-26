@@ -7,6 +7,7 @@ import { LinearProgress } from 'material-ui/Progress';
 import IconButton from 'material-ui/IconButton';
 import AddCircle from 'material-ui-icons/AddCircle';
 import Delete from 'material-ui-icons/Delete';
+import Download from 'material-ui-icons/FileDownload';
 
 import { EnhancedTable } from '../EnhancedTable';
 import { DateTime } from '../DateTime';
@@ -33,8 +34,6 @@ type TDispatchProps = {
   navigate: (uri: string) => void;
 };
 type TProps = TStateProps & TDispatchProps & TOwnProps;
-
-// const styles = require<{ 'table-header-cell': string, numeric: string }>('./Tours.css');
 
 class ListComponent extends React.Component<TProps> {
   componentWillMount() {
@@ -70,11 +69,16 @@ class ListComponent extends React.Component<TProps> {
               },
               { id: 'user', label: 'User' }
             ]}
-            renderToolbarActions={(numSelected: number) => {
+            renderToolbarActions={(numSelected: number, getSelection: () => TPerson[]) => {
               if (numSelected > 0) {
-                return <IconButton>
-                  <Delete />
-                </IconButton>;
+                return <div>
+                  <IconButton>
+                    <Delete />
+                  </IconButton>
+                  <IconButton>
+                    <Download />
+                  </IconButton>
+                </div>;
               }
 
               return <IconButton onClick={() => navigate('/members/add')}>

@@ -69,40 +69,22 @@ const mapRoutesSelector = createSelector(
 const mapToursSelector = createSelector(
   (args: { tours: TEnhancedTour[]; people: TPerson[]; }) => args.tours,
   (args: { tours: TEnhancedTour[]; people: TPerson[]; }) => args.people,
-  (tours: TEnhancedTour[], people: TPerson[]) => {
-    const toursByPerson = tours.reduce<{ [participant: string]: TEnhancedTour[] }>(
-      (prev, cur) => ({
-        ...prev,
-        ...cur.participants.reduce<{ [participant: string]: TEnhancedTour[] }>(
-          (partPrev, curPart) => ({
-            ...(partPrev || {}),
-            [curPart]: [...((partPrev || {})[curPart] || []), cur]
-          }),
-          prev)
-      }),
-      {}
-    );
+  (tours: TEnhancedTour[], people: TPerson[]): TGroupedTours[] => {
+    return tours.map<TGroupedTours>((t) => {
+      const participantCount = t.participants.length;
+      const route = t.routeObj;
 
-    const toursByPersonSummedUp = Object
-      .keys(toursByPerson)
-      .reduce<TGroupedTours[]>(
-      (prev, p) => ([
-        ...prev,
-        {
-          id: p,
-          participant: people.find(person => person.id === p),
-          tours: toursByPerson[p],
-          tourCount: toursByPerson[p].length,
-          elevation: toursByPerson[p].reduce((sum, cur) => sum + (cur.routeObj ? cur.routeObj.elevation : 0), 0),
-          distance: toursByPerson[p].reduce((sum, cur) => sum + (cur.routeObj ? cur.routeObj.distance : 0), 0),
-          totalPoints: toursByPerson[p].reduce((sum, cur) => sum + cur.points, 0)
-        }
-      ]),
-      []
-      );
-    toursByPersonSummedUp.sort((a, b) => b.totalPoints - a.totalPoints);
-
-    return toursByPersonSummedUp;
+      return ({
+        id: t.id,
+        date: t.date,
+        tour: t,
+        totalPoints: t.points * participantCount,
+        distance: (route ? route.distance : 0) * participantCount,
+        elevation: (route ? route.elevation : 0) * participantCount,
+        participantCount,
+        participants: t.participants.map((p) => people.find((person) => person.id === p))
+      });
+    });
   }
 );
 
@@ -135,13 +117,19 @@ class ReportComponent extends React.Component<TProps & RouteComponentProps<any>>
             {
               id: 'name',
               label: 'Name',
-              value: (row: TGroupedTours) =>
-                row.participant ? `${row.participant.lastName} ${row.participant.firstName}` : row.id
+              value: (row: TGroupedTours) => row.tour.routeObj ? row.tour.routeObj.name : row.id
             },
+            { id: 'date', label: 'Datum', type: 'date' },
             { id: 'totalPoints', label: 'Punkte', type: 'number' },
-            { id: 'tourCount', label: 'Anzahl Touren', type: 'number' },
+            { id: 'participantCount', label: 'Anzahl Teilnehmer', type: 'number' },
             { id: 'distance', label: 'Distanz', type: 'number' },
-            { id: 'elevation', label: 'Höhenmeter', type: 'number' }
+            { id: 'elevation', label: 'Höhenmeter', type: 'number' },
+            {
+              id: 'tours',
+              label: 'Teilnehmer',
+              type: 'string',
+              value: (row: TGroupedTours) => row.participants.map(t => t ? t.lastName : t).join()
+            }
           ]}
           renderToolbarActions={(numSelected: number, getSelection: () => TGroupedTours[]) => {
             if (numSelected > 0) {
@@ -153,10 +141,10 @@ class ReportComponent extends React.Component<TProps & RouteComponentProps<any>>
             return <div />;
           }}
           data={groupedTours}
-          showDetails={id => navigate('/reports/year/' + id)}
+          showDetails={id => navigate('/reports/tour/' + id)}
         />
         <PrivateRoute
-          path="/reports/year/:id"
+          path="/reports/tour/:id"
           exact={true}
           render={(props: RouteComponentProps<{ id: string; }>) => <PersonDetails
             close={() => back()}
@@ -173,12 +161,14 @@ class ReportComponent extends React.Component<TProps & RouteComponentProps<any>>
         data: data, fields: [
           {
             label: 'name',
-            value: (row: TGroupedTours) => row.participant ?
-              `${row.participant.lastName} ${row.participant.firstName}` :
-              row.id
+            value: (row: TGroupedTours) => row.tour.routeObj ? row.tour.routeObj.name : row.tour.id
+          },
+          {
+            label: 'date',
+            value: (row: TGroupedTours) => row.tour.date
           },
           'totalPoints',
-          'tourCount',
+          'participantCount',
           'distance',
           'elevation'
         ]
