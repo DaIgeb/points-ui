@@ -8,10 +8,9 @@ import { LinearProgress } from 'material-ui/Progress';
 import IconButton from 'material-ui/IconButton';
 import Download from 'material-ui-icons/FileDownload';
 
-import * as json2csv from 'json2csv';
-
 import * as fromReducers from '../../reducers';
 import * as fromActions from '../../actions';
+import * as fromUtils from '../../utils';
 
 import { EnhancedTable } from '../EnhancedTable';
 import { PrivateRoute } from '../PrivateRoute';
@@ -36,6 +35,35 @@ type TOwnProps = {
   year: number;
 };
 type TProps = TStateProps & TDispatchProps & TOwnProps;
+
+const fields = [
+  {
+    label: 'Name',
+    value: (row: TGroupedTours) => row.participant ?
+      `${row.participant.lastName} ${row.participant.firstName}` :
+      row.id
+  },
+  {
+    label: 'Punkte',
+    value: 'totalPoints',
+  },
+  {
+    label: 'Anzahl Touren',
+    value: 'tourCount',
+  },
+  {
+    label: 'Touren',
+    value: (row: TGroupedTours) => row.tours.map(t => `${t.date} ${t.routeObj ? t.routeObj.name : t.route}`).join(),
+  },
+  {
+    label: 'Distanz',
+    value: 'distance',
+  },
+  {
+    label: 'Höhenmeter',
+    value: 'elevation'
+  }
+];
 
 const bindActionCreators: TDispatchProps = {
   loadTours: fromActions.tours.reload,
@@ -168,27 +196,10 @@ class ReportComponent extends React.Component<TProps & RouteComponentProps<any>>
   }
 
   private download = (data: TGroupedTours[]) => {
-    try {
-      var result = json2csv({
-        data: data, fields: [
-          {
-            label: 'name',
-            value: (row: TGroupedTours) => row.participant ?
-              `${row.participant.lastName} ${row.participant.firstName}` :
-              row.id
-          },
-          'totalPoints',
-          'tourCount',
-          'distance',
-          'elevation'
-        ]
-      });
-      console.log(result);
-    } catch (err) {
-      // Errors are thrown for bad options, or if the data is empty and no fields are provided.
-      // Be sure to provide fields if it is possible that your data array will be empty.
-      console.error(err);
-    }
+    fromUtils.csv.download(
+      { data, fields },
+      `year-by-rider-report-${this.props.year}.csv`
+    );
   }
 
   private initialize = (props: TProps) => {

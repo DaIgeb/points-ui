@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Autosuggest from 'react-autosuggest';
 import TextField from 'material-ui/TextField';
-import { InputProps } from 'material-ui/Input/Input';
 import Paper, { PaperProps } from 'material-ui/Paper/Paper';
 import { MenuItem } from 'material-ui/Menu';
 import * as match from 'autosuggest-highlight/match';
@@ -19,14 +18,6 @@ type TSuggestion = {
   key: string;
   caption: string;
 };
-
-type TInputProps = InputProps &
-  {
-    value: string;
-    classes: { textField: string; input: string; };
-    home: boolean;
-    ref: React.Ref<any> // tslint:disable-line
-  };
 
 const styles: StyleRulesCallback = (theme: Theme<{}>): TClasses => ({
   container: {
@@ -56,9 +47,9 @@ const styles: StyleRulesCallback = (theme: Theme<{}>): TClasses => ({
 
 type TState = { value: string; suggestions: TSuggestion[]; };
 
-class IntegrationAutosuggest extends React.Component<TProps & { classes: TClasses; }, TState> {
-  constructor(props: TProps & { classes: TClasses; }) {
-    super(props);
+class IntegrationAutosuggest extends React.Component<TProps & { classes: TStrings<TClasses> }, TState> {
+  constructor() {
+    super();
 
     this.state = {
       value: '',
@@ -124,13 +115,13 @@ class IntegrationAutosuggest extends React.Component<TProps & { classes: TClasse
     });
   }
 
-  private handleChange = (event: React.SyntheticEvent<{}>, { newValue }: { newValue: string }) => {
+  private handleChange = (event: React.FormEvent<{}>, { newValue }: Autosuggest.ChangeEvent) => {
     this.setState({
       value: newValue,
     });
   }
 
-  private renderInput = (inputProps: TInputProps) => {
+  private renderInput = (inputProps: Autosuggest.InputProps) => {
     const { classes, home, value, ref, ...other } = inputProps;
 
     return (
@@ -140,7 +131,8 @@ class IntegrationAutosuggest extends React.Component<TProps & { classes: TClasse
         value={value}
         inputRef={ref}
         InputProps={{
-          ...other
+          // tslint:disable-next-line:no-any
+          ...(other as any)
         }}
       />
     );
@@ -199,4 +191,4 @@ type TProps = {
   onChange: (item: string) => void;
 };
 
-export const AutoComplete = withStyles<TProps>(styles)(IntegrationAutosuggest);
+export const AutoComplete = withStyles(styles)<TProps>(IntegrationAutosuggest);

@@ -15,6 +15,8 @@ type TProps = {
   onSelectAllClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   order: types.TSortOrder;
   orderBy: types.TColumn | undefined;
+  rowCount: number;
+  numSelected: number;
 };
 
 export class EnhancedTableHead extends React.Component<TProps> {
@@ -23,20 +25,24 @@ export class EnhancedTableHead extends React.Component<TProps> {
   }
 
   render() {
-    const { columns: columnData, onSelectAllClick, order, orderBy } = this.props;
+    const { columns: columnData, onSelectAllClick, order, orderBy, rowCount, numSelected } = this.props;
 
     return (
       <TableHead>
         <TableRow>
-          {onSelectAllClick && <TableCell checkbox={true}>
-            <Checkbox onChange={onSelectAllClick} />
+          {onSelectAllClick && <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={numSelected === rowCount}
+              onChange={onSelectAllClick}
+            />
           </TableCell>}
           {columnData.map(column => {
             return (
               <TableCell
                 key={column.id}
                 numeric={column.type === 'number'}
-                disablePadding={column.disablePadding}
+                padding={column.disablePadding ? 'none' : 'default'}
               >
                 <TableSortLabel
                   active={orderBy === column}

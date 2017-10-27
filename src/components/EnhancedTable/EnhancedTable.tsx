@@ -97,6 +97,8 @@ export class EnhancedTable extends React.Component<TProps, TState> {
             orderBy={orderBy}
             onSelectAllClick={this.handleSelectAllClick}
             onRequestSort={this.handleRequestSort}
+            rowCount={data.length}
+            numSelected={selected.length}
           />
           <TableBody>
             {data.map(n => {
@@ -112,11 +114,11 @@ export class EnhancedTable extends React.Component<TProps, TState> {
                   selected={isSelected}
                   className={rowClass ? rowClass(n) : undefined}
                 >
-                  <TableCell checkbox={true}>
+                  <TableCell padding="checkbox">
                     <Checkbox checked={isSelected} />
                   </TableCell>
                   {columns.map(c =>
-                    <TableCell key={c.id} disablePadding={c.disablePadding} numeric={c.type === 'number'}>
+                    <TableCell key={c.id} padding={c.disablePadding ? 'none' : 'default'} numeric={c.type === 'number'}>
                       {renderRowValue(c, n)}
                     </TableCell>
                   )}

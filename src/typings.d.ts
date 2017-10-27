@@ -1,3 +1,7 @@
+type TStrings<T> = {
+  [P in keyof T]: string;
+}
+
 type TState = {
   tours: TToursState;
   routes: TRoutesStates;
