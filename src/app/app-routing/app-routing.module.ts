@@ -4,10 +4,12 @@ import { CommonModule } from '@angular/common';
 
 import { BasicTableComponent } from '../basic-table/basic-table.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { CallbackComponent } from '../callback/callback.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'table', component: BasicTableComponent },
+  { path: 'callback', component: CallbackComponent },
 ];
 
 @NgModule({

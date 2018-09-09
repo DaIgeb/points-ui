@@ -16,7 +16,21 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here</div>
+          <div *ngIf="auth.userProfile">
+
+            <img src="{{auth.userProfile.picture}}" class="avatar" alt="avatar">
+            <div>
+              <label><i class="glyphicon glyphicon-user"></i> Nickname</label>
+              <h3 class="nickname">{{ auth.userProfile.nickname }}</h3>
+            </div>
+            <pre class="full-profile">{{ auth.userProfile | json }}</pre>
+            <p (click)="auth.logout()">Logout</p>
+
+          </div>
+          <div *ngIf="!auth.userProfile">
+            <mat-progress-spinner></mat-progress-spinner>
+            <mat-spinner></mat-spinner>
+          </div>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
