@@ -6,6 +6,8 @@ const idsReducer = (state: string[] = [], action: TActions) => {
       return action.payload.map(t => t.id);
     case 'TOUR_ADD_SUCCESS':
       return [...state, action.payload.id];
+    case 'TOUR_REMOVE_SUCCESS':
+      return state.filter(id => id !== action.payload);
     default:
       return state;
   }

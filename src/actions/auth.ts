@@ -7,7 +7,9 @@ export const login = (): TDispatchableAction => (dispatch, getState) => {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   const lock = new Auth0Lock(clientId, domain, {
     auth: {
-      redirect: false,
+      redirect: true,
+      redirectUrl: `${document.location.origin}/callback`,
+      responseType: 'token',
       params: {
         scope: 'openid profile email'
       }

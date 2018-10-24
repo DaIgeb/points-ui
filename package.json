@@ -7,8 +7,8 @@
     "@types/react": "^16.0.18"
   },
   "devDependencies": {
-    "@types/auth0-js": "^8.10.1",
-    "@types/auth0-lock": "^10.16.1",
+    "@types/auth0-js": "^8.11.6",
+    "@types/auth0-lock": "^11.4.7",
     "@types/enzyme": "^3.1.1",
     "@types/es6-promise": "0.0.33",
     "@types/file-saver": "0.0.1",
@@ -27,8 +27,8 @@
     "@types/redux-thunk": "^2.1.0",
     "@types/webpack-env": "^1.13.2",
     "FileSaver": "^0.10.0",
-    "auth0-js": "^8.10.1",
-    "auth0-lock": "^10.23.1",
+    "auth0-js": "^9.8.0",
+    "auth0-lock": "^11.10.0",
     "autosuggest-highlight": "^3.1.1",
     "enzyme": "^3.1.0",
     "es6-promise": "^4.1.1",

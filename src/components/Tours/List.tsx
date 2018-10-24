@@ -7,6 +7,7 @@ import { LinearProgress } from 'material-ui/Progress';
 import IconButton from 'material-ui/IconButton';
 import AddCircle from 'material-ui-icons/AddCircle';
 import Delete from 'material-ui-icons/Delete';
+import Refresh from 'material-ui-icons/Refresh';
 
 import { EnhancedTable } from '../EnhancedTable';
 import { DateTime } from '../DateTime';
@@ -32,6 +33,7 @@ type TDispatchProps = {
   reload: () => void;
   reloadRoutes: () => void;
   navigate: (uri: string) => void;
+  remove: (id: string) => void;
 };
 type TProps = TStateProps & TDispatchProps & TOwnProps;
 
@@ -44,7 +46,7 @@ class ListComponent extends React.Component<TProps> {
   }
 
   render() {
-    const { tours, routes, loaded, routesLoaded, navigate } = this.props;
+    const { tours, routes, loaded, routesLoaded, navigate, remove } = this.props;
     if (!loaded || !routesLoaded) {
       return <LinearProgress mode="indeterminate" />;
     }
@@ -57,7 +59,7 @@ class ListComponent extends React.Component<TProps> {
             columns={[
               {
                 id:
-                'route',
+                  'route',
                 label: 'Strecke',
                 value: (row: TTour) => {
                   const route = routes.find(r => r.id === row.route);
@@ -88,16 +90,21 @@ class ListComponent extends React.Component<TProps> {
               },
               { id: 'user', label: 'User' }
             ]}
-            renderToolbarActions={(numSelected: number) => {
+            renderToolbarActions={(numSelected, getSelection) => {
               if (numSelected > 0) {
-                return <IconButton>
+                return <IconButton onClick={() => remove(getSelection()[0].id)}>
                   <Delete />
                 </IconButton>;
               }
 
-              return <IconButton onClick={() => navigate('/tours/add')}>
-                <AddCircle />
-              </IconButton>;
+              return [
+                <IconButton onClick={this.reload} key="refresh">
+                  <Refresh />
+                </IconButton>,
+                <IconButton onClick={() => navigate('/tours/add')} key="add">
+                  <AddCircle />
+                </IconButton>
+              ];
             }}
             data={tours}
             showDetails={id => navigate(`/tours/${id}`)}
@@ -105,6 +112,10 @@ class ListComponent extends React.Component<TProps> {
         </div >
       </div >
     );
+  }
+
+  private reload = () => {
+    this.props.reload();
   }
 
   private initialize = (props: TProps) => {
@@ -129,6 +140,7 @@ export const List = connect<TStateProps, TDispatchProps, TOwnProps>(
   mapStateToProps,
   {
     reload: fromActions.tours.reload,
+    remove: fromActions.tours.remove,
     reloadRoutes: fromActions.routes.reload,
     navigate: push
   }

@@ -131,3 +131,40 @@ export const save = (id: string, patch: TTourCreate): TDispatchableAction =>
         return action;
       });
   };
+
+export const remove = (id: string): TDispatchableAction =>
+  (dispatch, getState): (TActions | Promise<TActions> | void) => {
+    const idToken = fromReducers.getIdToken(getState());
+    if (!idToken) {
+      return Promise.reject('Not logged in');
+    }
+
+    const request: RequestInit = {
+      headers: {
+        Authorization: 'Bearer ' + idToken,
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE'
+    };
+
+    return fetch(process.env.REACT_APP_API_HOST + '/tours/' + id, request)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw Error(response.statusText);
+      })
+      .then(() => {
+        const action: TActions = { type: 'TOUR_REMOVE_SUCCESS', payload: id };
+        dispatch(action);
+
+        return action;
+      })
+      .catch((err) => {
+        const action: TActions = { type: 'TOUR_REMOVE_FAILURE', payload: err };
+        dispatch(action);
+
+        return action;
+      });
+  };

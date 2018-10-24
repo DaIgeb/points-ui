@@ -99,60 +99,63 @@ type TActions = {
   type: 'LOGIN_SUCCESS';
   payload: TAuthState;
 } | {
-    type: 'LOGIN_FAILED';
-    payload: object;
-  } | {
-    type: 'TOURS_LOAD_SUCCESS';
-    payload: TTour[];
-  } | {
-    type: 'TOURS_LOAD_FAILURE';
-    payload: TTour;
-  } | {
-    type: 'PERSON_LOAD_SUCCESS';
-    payload: TPerson[];
-  } | {
-    type: 'PERSON_LOAD_FAILURE';
-    payload: TPerson;
-  } | {
-    type: 'PERSON_ADD_SUCCESS';
-    payload: TPerson;
-  } | {
-    type: 'PERSON_ADD_FAILURE' | 'ROUTE_ADD_FAILURE' | 'TOUR_ADD_FAILURE' | 'TOUR_SAVE_FAILURE';
-    payload: any;
-  } | {
-    type: 'PERSON_LOAD' | 'PERSON_STORE_ADDING' | 'ROUTES_LOAD' | 'ROUTE_STORE_ADDING' | 'TOURS_LOAD' | 'TOUR_STORE_ADDING' | 'TOUR_STORE_SAVING' | 'LOGOUT';
-  } | {
-    type: 'PERSON_STORE_ADD';
-    payload: TPersonCreate;
-  } | {
-    type: 'ROUTES_LOAD_SUCCESS';
-    payload: TRoute[];
-  } | {
-    type: 'ROUTES_LOAD_FAILURE';
-    payload: TRoute;
-  } | {
-    type: 'ROUTE_STORE_ADD';
-    payload: TRouteCreate;
-  }
+  type: 'LOGIN_FAILED';
+  payload: object;
+} | {
+  type: 'TOURS_LOAD_SUCCESS';
+  payload: TTour[];
+} | {
+  type: 'TOURS_LOAD_FAILURE';
+  payload: TTour;
+} | {
+  type: 'PERSON_LOAD_SUCCESS';
+  payload: TPerson[];
+} | {
+  type: 'PERSON_LOAD_FAILURE';
+  payload: TPerson;
+} | {
+  type: 'PERSON_ADD_SUCCESS';
+  payload: TPerson;
+} | {
+  type: 'PERSON_ADD_FAILURE' | 'ROUTE_ADD_FAILURE' | 'TOUR_ADD_FAILURE' | 'TOUR_REMOVE_FAILURE' | 'TOUR_SAVE_FAILURE';
+  payload: any;
+} | {
+  type: 'PERSON_LOAD' | 'PERSON_STORE_ADDING' | 'ROUTES_LOAD' | 'ROUTE_STORE_ADDING' | 'TOURS_LOAD' | 'TOUR_STORE_ADDING' | 'TOUR_STORE_SAVING' | 'LOGOUT';
+} | {
+  type: 'PERSON_STORE_ADD';
+  payload: TPersonCreate;
+} | {
+  type: 'ROUTES_LOAD_SUCCESS';
+  payload: TRoute[];
+} | {
+  type: 'ROUTES_LOAD_FAILURE';
+  payload: TRoute;
+} | {
+  type: 'ROUTE_STORE_ADD';
+  payload: TRouteCreate;
+}
   | {
-    type: 'ROUTE_ADD_SUCCESS';
-    payload: TRoute;
-  } | {
-    type: 'TOUR_STORE_ADD';
-    payload: TTourCreate;
-  } | {
-    type: 'TOUR_STORE_EDIT';
-    payload: {
-      id: string;
-      patch: TTourCreate;
-    };
-  } | {
-    type: 'TOUR_ADD_SUCCESS';
-    payload: TTour;
-  } | {
-    type: 'TOUR_SAVE_SUCCESS';
-    payload: TTour;
+  type: 'ROUTE_ADD_SUCCESS';
+  payload: TRoute;
+} | {
+  type: 'TOUR_STORE_ADD';
+  payload: TTourCreate;
+} | {
+  type: 'TOUR_STORE_EDIT';
+  payload: {
+    id: string;
+    patch: TTourCreate;
   };
+} | {
+  type: 'TOUR_ADD_SUCCESS';
+  payload: TTour;
+} | {
+  type: 'TOUR_REMOVE_SUCCESS';
+  payload: string;
+} | {
+  type: 'TOUR_SAVE_SUCCESS';
+  payload: TTour;
+};
 
 declare const process: any;
 
