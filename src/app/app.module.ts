@@ -1,6 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule, MatCardModule, MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule, MatSpinner, MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  MatButtonModule,
+  MatCheckboxModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatIconModule,
+  MatListModule,
+  MatGridListModule,
+  MatCardModule,
+  MatMenuModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatSpinner,
+  MatProgressSpinner,
+  MatProgressSpinnerModule
+} from '@angular/material';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
