@@ -13,12 +13,16 @@ export class AuthService {
     domain: 'rvw.eu.auth0.com',
     responseType: 'token id_token',
     redirectUri: 'http://localhost:4200/callback',
-    scope: 'openid profile'
+    scope: 'openid profile email'
   });
 
-  constructor(public router: Router) { }
+  constructor(public router: Router) {
+    if (this.isAuthenticated()) {
+      this.getProfile();
+    }
+  }
 
-  userProfile?: auth0.Auth0UserProfile;
+  private userProfile?: auth0.Auth0UserProfile;
 
   public login(): void {
     this.auth0.authorize();
@@ -59,7 +63,14 @@ export class AuthService {
     // Check whether the current time is past the
     // Access Token's expiry time
     const expiresAt = JSON.parse(localStorage.getItem('expires_at') || '{}');
-    return new Date().getTime() < expiresAt;
+    const isAuthenticated = new Date().getTime() < expiresAt;
+    if (!isAuthenticated) {
+      if (this.userProfile) {
+        this.logout();
+      }
+    }
+
+    return isAuthenticated;
   }
 
   public getProfile(cb?: auth0.Auth0Callback<auth0.Auth0UserProfile>): void {

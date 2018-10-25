@@ -16,7 +16,7 @@
       <span>points-ui</span>
       <span class="toolbar-fill-space"></span>
       <span *ngIf="!auth.isAuthenticated()" (click)="auth.login()">Login</span>
-      <span *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Logout ({{auth.userProfile?.name}})</span>
+      <span *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Logout ({{auth.userProfile?.nickname || auth.userProfile?.name}})</span>
     </mat-toolbar>
 
     <router-outlet></router-outlet>
