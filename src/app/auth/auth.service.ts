@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as auth0 from 'auth0-js';
 import { Router } from '@angular/router';
+import * as Observable from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 (window as any).global = window;
 
@@ -22,10 +24,13 @@ export class AuthService {
     }
   }
 
-  private userProfile?: auth0.Auth0UserProfile;
+  public userProfile?: auth0.Auth0UserProfile;
+  private refreshSubscription: Observable.Subscription;
 
-  public login(): void {
-    this.auth0.authorize();
+  public login(url?: string): void {
+    this.auth0.authorize({
+      state: JSON.stringify({ url: url || window.document.location.pathname })
+    });
   }
 
   public handleAuthentication(): void {
@@ -33,8 +38,9 @@ export class AuthService {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
         this.setSession(authResult);
-        this.getProfile();
-        this.router.navigate(['/']);
+        this.getProfile(() => {
+          this.router.navigate([authResult.state ? JSON.parse(authResult.state).url || '/' : '/']);
+        });
       } else if (err) {
         this.router.navigate(['/']);
         console.log(err);
@@ -42,7 +48,46 @@ export class AuthService {
     });
   }
 
-  private setSession(authResult): void {
+  private renewToken() {
+    this.auth0.checkSession({
+      audience: 'rvw.eu.auth0.com'
+    }, (err, result) => {
+      if (!err) {
+        this.setSession(result);
+      }
+    });
+  }
+
+  public scheduleRenewal() {
+    if (!this.isAuthenticated()) { return; }
+
+    const currentExpiresAt = JSON.parse(window.localStorage.getItem('expires_at'));
+
+    const source = Observable.of(currentExpiresAt).pipe(flatMap(
+      expiresAt => {
+
+        const now = Date.now();
+
+        // Use the delay in a timer to
+        // run the refresh at the proper time
+        const refreshAt = expiresAt - (1000 * 30); // Refresh 30 seconds before expiry
+        return Observable.timer(Math.max(1, refreshAt - now));
+      }));
+
+    // Once the delay time from above is
+    // reached, get a new JWT and schedule
+    // additional refreshes
+    this.refreshSubscription = source.subscribe(() => {
+      this.renewToken();
+    });
+  }
+
+  private unscheduleRenewal() {
+    if (!this.refreshSubscription) { return; }
+    this.refreshSubscription.unsubscribe();
+  }
+
+  private setSession(authResult: auth0.Auth0DecodedHash): void {
     // Set the time that the Access Token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
@@ -57,6 +102,7 @@ export class AuthService {
     localStorage.removeItem('expires_at');
 
     this.userProfile = undefined;
+    this.unscheduleRenewal();
   }
 
   public isAuthenticated(): boolean {
@@ -71,6 +117,26 @@ export class AuthService {
     }
 
     return isAuthenticated;
+  }
+
+  public hasRoles(roles: string[]): boolean {
+    const missingRoles = this.getMissingRoles(roles);
+    if (missingRoles.length === 0) {
+      return true;
+    }
+
+    console.log(missingRoles);
+
+    return false;
+  }
+
+  private getMissingRoles(roles: string[]): string[] {
+    if (this.userProfile && this.userProfile.app_metadata) {
+      const givenRoles: string[] = this.userProfile.app_metadata.roles;
+      return roles.filter(r => givenRoles.indexOf(r) === -1);
+    }
+
+    return roles;
   }
 
   public getProfile(cb?: auth0.Auth0Callback<auth0.Auth0UserProfile>): void {

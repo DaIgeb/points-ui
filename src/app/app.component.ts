@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,7 @@ export class AppComponent {
   title = 'points-ui';
 
   constructor(public auth: AuthService) {
+    auth.scheduleRenewal();
     auth.handleAuthentication();
   }
 }
