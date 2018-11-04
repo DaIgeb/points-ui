@@ -1,7 +1,8 @@
+
+import { timer as observableTimer, of as observableOf, Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as auth0 from 'auth0-js';
 import { Router } from '@angular/router';
-import * as Observable from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 (window as any).global = window;
@@ -25,7 +26,7 @@ export class AuthService {
   }
 
   public userProfile?: auth0.Auth0UserProfile;
-  private refreshSubscription: Observable.Subscription;
+  private refreshSubscription: Subscription;
 
   public login(url?: string): void {
     this.auth0.authorize({
@@ -63,7 +64,7 @@ export class AuthService {
 
     const currentExpiresAt = JSON.parse(window.localStorage.getItem('expires_at'));
 
-    const source = Observable.of(currentExpiresAt).pipe(flatMap(
+    const source = observableOf(currentExpiresAt).pipe(flatMap(
       expiresAt => {
 
         const now = Date.now();
@@ -71,7 +72,7 @@ export class AuthService {
         // Use the delay in a timer to
         // run the refresh at the proper time
         const refreshAt = expiresAt - (1000 * 30); // Refresh 30 seconds before expiry
-        return Observable.timer(Math.max(1, refreshAt - now));
+        return observableTimer(Math.max(1, refreshAt - now));
       }));
 
     // Once the delay time from above is
