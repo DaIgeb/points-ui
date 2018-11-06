@@ -18,6 +18,7 @@ import {
   MatProgressSpinnerModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
@@ -26,6 +27,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { BasicTableComponent } from './basic-table/basic-table.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { CallbackComponent } from './callback/callback.component';
+import { FormsModule } from '@angular/forms';
+import { SearchComponent as PersonSearchComponent } from './person/search/search.component';
+import { ListComponent as PeopleComponent} from './person/list/list.component';
+import { DetailComponent as PersonDetailComponent } from './person/detail/detail.component';
+import { AuthInterceptor } from './_helpers/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,10 +39,14 @@ import { CallbackComponent } from './callback/callback.component';
     NavigationComponent,
     DashboardComponent,
     BasicTableComponent,
-    CallbackComponent
+    CallbackComponent,
+    PeopleComponent,
+    PersonDetailComponent,
+    PersonSearchComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -52,9 +62,12 @@ import { CallbackComponent } from './callback/callback.component';
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

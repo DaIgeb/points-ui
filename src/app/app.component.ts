@@ -10,7 +10,6 @@ export class AppComponent {
   title = 'points-ui';
 
   constructor(public auth: AuthService) {
-    auth.scheduleRenewal();
     auth.handleAuthentication();
   }
 }

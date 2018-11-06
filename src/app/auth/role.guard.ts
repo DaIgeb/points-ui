@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin, combineLatest } from 'rxjs';
 import { AuthService } from './auth.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +19,17 @@ export class RoleGuard implements CanActivate {
     return this.checkLogin(url, roles);
   }
 
-  private checkLogin(url: string, roles: string[]): boolean {
-    if (this.authService.isAuthenticated() && this.authService.hasRoles(roles)) { return true; }
+  private checkLogin(url: string, roles: string[]): Observable<boolean> {
+    return this.authService.hasRoles(roles).pipe(
+      map((hasRoles) => {
+        if (hasRoles) {
+          return true;
+        }
 
-    // Store the attempted URL for redirecting
-    // this.authService.redirectUrl = url;
+        this.authService.login(url);
 
-    // Navigate to the login page with extras
-    // this.router.navigate(['/login']);
-    this.authService.login(url);
-
-    return false;
+        return false;
+      })
+    );
   }
 }
