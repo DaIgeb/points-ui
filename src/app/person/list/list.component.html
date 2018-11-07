@@ -1,5 +1,60 @@
 <h2>People</h2>
 
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+      GitHub's API rate limit has been reached. It will be reset in one minute.
+    </div>
+  </div>
+
+  <div class="example-table-container">
+
+    <table mat-table [dataSource]="people" class="example-table" matSort matSortActive="createdAt" matSortDisableClear
+      matSortDirection="asc">
+      <!-- Number Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <a routerLink="/people/{{row.id}}">
+            <span class="badge">{{row.id}}</span> {{row.name}}
+          </a>
+          <button mat-button class="delete" title="delete person" (click)="delete(row)">x</button>
+        </td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+        <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
+      </ng-container>
+
+      <!-- State Column -->
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+        <td mat-cell *matCellDef="let row">{{row.lastName}}</td>
+      </ng-container>
+
+      <!-- Created Column -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Created
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.createdAt | date}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+</div>
+
 <div>
   <label>Person name:
     <input #personName />
@@ -9,12 +64,4 @@
     add
   </button>
 </div>
-<ul class="people">
-  <li *ngFor="let person of people">
-    <a routerLink="/people/{{person.id}}">
-      <span class="badge">{{person.id}}</span> {{person.name}}
-    </a>
-    <button class="delete" title="delete person" (click)="delete(person)">x</button>
-  </li>
-</ul>
 <app-person-search></app-person-search>

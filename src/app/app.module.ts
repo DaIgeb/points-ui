@@ -13,9 +13,9 @@ import {
   MatTableModule,
   MatPaginatorModule,
   MatSortModule,
-  MatSpinner,
-  MatProgressSpinner,
-  MatProgressSpinnerModule
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatFormFieldModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -61,6 +61,8 @@ import { AuthInterceptor } from './_helpers/auth.interceptor';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatInputModule,
+    MatFormFieldModule,
     MatProgressSpinnerModule,
     AppRoutingModule,
     HttpClientModule
